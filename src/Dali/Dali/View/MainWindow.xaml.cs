@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedSharp.Dali.Common.GlobalHotkey;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,22 @@ namespace RedSharp.Dali.View
         public MainWindow()
         {
             InitializeComponent();
+        }        
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            base.OnInitialized(e);
+
+            GlobalHotkeyProvider provider = new GlobalHotkeyProvider(Application.Current.MainWindow);
+
+            provider.OnHotkeyPressed += Event;
+
+            provider.Register(HotkeyModifier.Ctrl, InputKeys.R);
+        }
+
+        public void Event(HotkeyModifier modifier, InputKeys key)
+        {
+            MessageBox.Show("Luntic blet");
         }
     }
 }

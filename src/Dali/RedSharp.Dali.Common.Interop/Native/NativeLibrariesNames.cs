@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RedSharp.Dali.Common.Interop
+namespace RedSharp.Dali.Common.Interop.Native
 {
     /// <summary>
-    /// TODO
+    /// Helper with names for all used native libraries.
     /// </summary>
     internal class NativeLibrariesNames
     {

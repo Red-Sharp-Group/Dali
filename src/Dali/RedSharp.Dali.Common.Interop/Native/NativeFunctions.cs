@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace RedSharp.Dali.Common.Interop
+namespace RedSharp.Dali.Common.Interop.Native
 {
     /// <summary>
-    /// TODO
+    /// Contains functions from native WinApi.
     /// </summary>
+    /// <SecurityNote>
+    /// Must be internal, because whole this assembly created for communication 
+    /// with the native functionality, so this functionality doesn't needed for other assemblies.
+    /// </SecurityNote>
     internal class NativeFunctions
     {
 

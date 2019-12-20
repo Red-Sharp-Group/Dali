@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
-
+using System.Windows.Threading;
 using RedSharp.Dali.Common.Enums;
 using RedSharp.Dali.Common.Interfaces;
 using RedSharp.Dali.Common.Interop.Native;
@@ -21,7 +21,8 @@ namespace RedSharp.Dali.Common.Interop
         #region Members
         //=================================================//
         // Members
-        
+
+        private Dispatcher _dispatcher;
         private HwndSource _source;
         private HotkeyModifier _holdedModifier;
         private Keys _holdedKeyWinForm;
@@ -50,7 +51,7 @@ namespace RedSharp.Dali.Common.Interop
         /// Invokes when user press chosen combination of keys.
         /// </summary>
         /// <SecurityNote>
-        /// I can't guarantee needed thread.
+        /// Will be invoked on the window thread.
         /// </SecurityNote>
         public event Action<HotkeyModifier, Key> OnHotkeyPressed;
 
@@ -71,14 +72,16 @@ namespace RedSharp.Dali.Common.Interop
                 throw new ArgumentNullException(nameof(window));
 
             var interopHelper = new WindowInteropHelper(window);
-
+            
             _windowHandle = interopHelper.Handle;
-
+            
             if (_windowHandle == IntPtr.Zero)
                 throw new InvalidOperationException("Input Window has invalid handle.");
 
             _source = HwndSource.FromHwnd(_windowHandle);
             _source.AddHook(HwndHook);
+
+            _dispatcher = window.Dispatcher;
 
             IsDisposed = false;
             IsRegistered = false;
@@ -252,11 +255,26 @@ namespace RedSharp.Dali.Common.Interop
             {
                 if (wParam.ToInt32() == _identifier)
                 {
-                    OnHotkeyPressed?.Invoke(_holdedModifier, _holdedKeyWPF);
+                    if(OnHotkeyPressed != null)
+                    {
+                        _dispatcher.Invoke(DispatchedAction);                        
+                    }
                 }
             }
 
             return IntPtr.Zero;
+        }
+
+        /// <summary>
+        /// Action that will be invoked on needed thread via dispatcher.
+        /// </summary>
+        /// <SecurityNote>
+        /// Don't invoke explicitly.
+        /// Event must be checked before.
+        /// </SecurityNote>
+        private void DispatchedAction()
+        {
+            OnHotkeyPressed.Invoke(_holdedModifier, _holdedKeyWPF);
         }
 
         #endregion

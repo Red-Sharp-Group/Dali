@@ -193,4 +193,6 @@ obj
 
 # VS files
 src/Dali/.vs/*
-/.vs
+
+#I have no freaking idea why, but my git doesn't ignore .vs without this: 
+/.vs/*

@@ -66,10 +66,25 @@ namespace RedSharp.Dali.Controls.Windows
         }
         #endregion
 
+        #region IsTitleBarVisible
+        public static readonly DependencyProperty IsTitleBarVisibleProperty =
+                DependencyProperty.Register(nameof(IsTitleBarVisible), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));
+
+        public bool IsTitleBarVisible
+        {
+            get => (bool)GetValue(IsTitleBarVisibleProperty);
+            set => SetValue(IsTitleBarVisibleProperty, value);
+        }
+
         #endregion
 
+        #endregion
+
+        #region Construction
         public DaliWindow()
         {
+            SetResourceReference(StyleProperty, typeof(DaliWindow));
+
             WindowChromeBehavior behavior = new WindowChromeBehavior();
 
             BindingOperations.SetBinding(behavior,
@@ -82,7 +97,9 @@ namespace RedSharp.Dali.Controls.Windows
 
             Microsoft.Xaml.Behaviors.Interaction.GetBehaviors(this).Add(behavior);
         }
+        #endregion
 
+        #region Public Methods
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -103,6 +120,7 @@ namespace RedSharp.Dali.Controls.Windows
             if(_maximiazeButton != null)
                 _maximiazeButton.Click += OnMaximizeButtonClick;
         }
+        #endregion
 
         #region Private Methods
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)

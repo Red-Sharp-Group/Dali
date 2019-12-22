@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RedSharp.Dali.Controls\RedSharp.Dali.Controls.csproj" />
     <ProjectReference Include="..\RedSharp.Dali.ViewModel\RedSharp.Dali.ViewModel.csproj" />
   </ItemGroup>
 

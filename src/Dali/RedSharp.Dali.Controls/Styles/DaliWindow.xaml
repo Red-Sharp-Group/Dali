@@ -2,8 +2,49 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:RedSharp.Dali.Controls.Windows">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../Themes/Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
+    <ControlTemplate x:Key="TitleBarButton" TargetType="Button">
+        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}" HorizontalAlignment="Stretch">
+            <ContentPresenter/>
+        </Border>
+    </ControlTemplate>
+    
+    <Style x:Key="TitleBarButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource TitleBarButtonBackgroundBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="27"/>
+        <Setter Property="Template" Value="{StaticResource TitleBarButton}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource CloseButtonBackgroundBrush}"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource MainTColor}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}" TargetType="{x:Type Button}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" To="#E81123"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <ControlTemplate x:Key="DaliWindowTemplate" TargetType="{x:Type local:DaliWindow}">
         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <DockPanel LastChildFill="True" Background="{TemplateBinding Background}">
@@ -13,24 +54,26 @@
                     <DockPanel LastChildFill="True" Background="Transparent">
                         <Image DockPanel.Dock="Left" Width="16" Height="16" Source="{TemplateBinding Icon}"
                                    VerticalAlignment="Center" Margin="8,0,0,0"/>
-                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,16,0">
-                            <Button x:Name="PART_MinimizeButton" Margin="0,0,16,0" Width="9" Height="9" Background="Transparent" BorderThickness="0"
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                            <Button x:Name="PART_MinimizeButton"
+                                    Style="{StaticResource TitleBarButtonStyle}"
                                     Visibility="{TemplateBinding CanMinimize, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Path Data="M0,0 L8,0 8,1 8,2 0,2 0,1 z" Stretch="Fill" Fill="Black" Height="1"/>
+                                <Path Data="M0,0 L8,0 8,1 8,2 0,2 0,1 z" Stretch="Fill" Fill="Black" Height="1" Width="9"/>
                             </Button>
-                            <Button x:Name="PART_MaximizeButton" Margin="0,0,16,0" Background="Transparent" BorderThickness="0"
-                                    Width="9" Height="9"
+                            <Button x:Name="PART_MaximizeButton"
+                                     Style="{StaticResource TitleBarButtonStyle}"
                                     Visibility="{TemplateBinding CanMaximize, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Path Data="F1 M 34,17L 43,17L 43,23L 34,23L 34,17 Z M 35,19L 35,22L 42,22L 42,19L 35,19 Z" Stretch="Fill" Fill="Black"/>
+                                <Path Data="F1 M 34,17L 43,17L 43,23L 34,23L 34,17 Z M 35,19L 35,22L 42,22L 42,19L 35,19 Z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
                             </Button>
-                            <Button x:Name="PART_CloseButton" Width="9" Height="9" Background="Transparent" BorderThickness="0"
+                            <Button x:Name="PART_CloseButton"
+                                    Style="{StaticResource CloseButtonStyle}"
                                     Visibility="{TemplateBinding CanClose, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <Path Data="F1 M 26.9166,22.1667L 37.9999,33.25L 
                                                  49.0832,22.1668L 53.8332,26.9168L 
                                                  42.7499,38L 53.8332,49.0834L
                                                  49.0833,53.8334L 37.9999,42.75L
                                                  26.9166,53.8334L 22.1666,49.0833L
-                                                 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z " Stretch="Fill" Fill="Black"/>
+                                                 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
                             </Button>
                         </StackPanel>
 
@@ -49,7 +92,7 @@
                         <Path Data="M1,4.9996096 L1,7.000219 7,6.999219 7,5.001 2,5.001 2,4.9996096 z 
                                     M3,2.0014141 L3,3.0000001 8,3.0000001 8,4.0000001 8,4.0008045 9,4.0008045 9,2.0014141 z 
                                     M2,0 L10,0 10,0.0010234118 10,1.0000001 10,5.001 8,5.001 8,7.9990235 0,8.0000239 
-                                    0,4.0000001 0,3.0009998 0,3.0000001 2,3.0000001 2,1.0000001 2,0.0010234118 z" Stretch="Fill" Fill="Black"/>
+                                    0,4.0000001 0,3.0009998 0,3.0000001 2,3.0000001 2,1.0000001 2,0.0010234118 z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
                     </Setter.Value>
                 </Setter>
             </Trigger>

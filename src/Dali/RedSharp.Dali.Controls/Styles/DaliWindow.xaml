@@ -4,6 +4,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="../Themes/Brushes.xaml"/>
+        <ResourceDictionary Source="../Themes/Paths.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -53,28 +54,20 @@
 
                     <DockPanel LastChildFill="True" Background="Transparent">
                         <Image DockPanel.Dock="Left" Width="16" Height="16" Source="{TemplateBinding Icon}"
-                                   VerticalAlignment="Center" Margin="8,0,0,0"/>
+                                   VerticalAlignment="Center" Margin="8,0,8,0"/>
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                            <Button x:Name="PART_MinimizeButton"
+                            <Button x:Name="PART_MinimizeButton" Content="{StaticResource MinimizeButtonPath}"
                                     Style="{StaticResource TitleBarButtonStyle}"
-                                    Visibility="{TemplateBinding CanMinimize, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Path Data="M0,0 L8,0 8,1 8,2 0,2 0,1 z" Stretch="Fill" Fill="Black" Height="1" Width="9"/>
-                            </Button>
-                            <Button x:Name="PART_MaximizeButton"
+                                    Visibility="{TemplateBinding CanMinimize, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                            <Button x:Name="PART_MaximizeButton" Content="{StaticResource MaximizeButtonPath}"
                                      Style="{StaticResource TitleBarButtonStyle}"
-                                    Visibility="{TemplateBinding CanMaximize, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Path Data="F1 M 34,17L 43,17L 43,23L 34,23L 34,17 Z M 35,19L 35,22L 42,22L 42,19L 35,19 Z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
-                            </Button>
-                            <Button x:Name="PART_CloseButton"
+                                    Visibility="{TemplateBinding CanMaximize, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+                            <Button x:Name="PART_CloseButton" Content="{StaticResource CloseButtonPath}"
                                     Style="{StaticResource CloseButtonStyle}"
-                                    Visibility="{TemplateBinding CanClose, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <Path Data="F1 M 26.9166,22.1667L 37.9999,33.25L 
-                                                 49.0832,22.1668L 53.8332,26.9168L 
-                                                 42.7499,38L 53.8332,49.0834L
-                                                 49.0833,53.8334L 37.9999,42.75L
-                                                 26.9166,53.8334L 22.1666,49.0833L
-                                                 33.25,38L 22.1667,26.9167L 26.9166,22.1667 Z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
-                            </Button>
+                                    Visibility="{TemplateBinding CanClose, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
                         </StackPanel>
 
                         <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
@@ -89,10 +82,7 @@
             <Trigger Property="WindowState" Value="Maximized">
                 <Setter TargetName="PART_MaximizeButton" Property="Content">
                     <Setter.Value>
-                        <Path Data="M1,4.9996096 L1,7.000219 7,6.999219 7,5.001 2,5.001 2,4.9996096 z 
-                                    M3,2.0014141 L3,3.0000001 8,3.0000001 8,4.0000001 8,4.0008045 9,4.0008045 9,2.0014141 z 
-                                    M2,0 L10,0 10,0.0010234118 10,1.0000001 10,5.001 8,5.001 8,7.9990235 0,8.0000239 
-                                    0,4.0000001 0,3.0009998 0,3.0000001 2,3.0000001 2,1.0000001 2,0.0010234118 z" Stretch="Fill" Fill="Black" Width="9" Height="9"/>
+                        <Image Source="{StaticResource RestoreButtonPath}" Width="11" Height="11"/>
                     </Setter.Value>
                 </Setter>
             </Trigger>

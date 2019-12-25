@@ -14,6 +14,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ReactiveUI" Version="11.0.1" />
     <PackageReference Include="ReactiveUI.WPF" Version="11.0.1" />
     <PackageReference Include="Unity" Version="5.11.2" />
@@ -22,6 +26,10 @@
   <ItemGroup>
     <ProjectReference Include="..\RedSharp.Dali.Controls\RedSharp.Dali.Controls.csproj" />
     <ProjectReference Include="..\RedSharp.Dali.ViewModel\RedSharp.Dali.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Icon.png" />
   </ItemGroup>
 
 </Project>

@@ -9,19 +9,33 @@
 
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
+    <!--
+        We don't need any WPF button decorations just presenter. In future we might move this to Button.xaml
+        resource dictionary.
+    -->
     <ControlTemplate x:Key="TitleBarButton" TargetType="Button">
         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"
                 Background="{TemplateBinding Background}" HorizontalAlignment="Stretch">
             <ContentPresenter/>
         </Border>
     </ControlTemplate>
-    
+
+    <!--
+        Style with common values for all toolbar buttons.
+    -->
     <Style x:Key="TitleBarButtonStyle" TargetType="{x:Type Button}">
         <Setter Property="Background" Value="{StaticResource TitleBarButtonBackgroundBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
         <Setter Property="Width" Value="46"/>
         <Setter Property="Height" Value="27"/>
         <Setter Property="Template" Value="{StaticResource TitleBarButton}"/>
+    </Style>
+
+    <!--
+        Triggers for default buttons.
+    -->
+    <Style x:Key="DefaultTitleBarButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}"
+           TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="{StaticResource CloseButtonBackgroundBrush}"/>
@@ -32,20 +46,42 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}" TargetType="{x:Type Button}">
+    <!--
+        Triggers for close button. With animation. As for me it's weird to have animation only for one button.
+        And it might be faster. But...
+        Colors are hardcoded here becouse we need actual color for animation. I could try to get it from resource,
+        but maybe it is fine as is?
+    -->
+    <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}" 
+           TargetType="{x:Type Button}">
         <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource MainTColor}"/>
+            </Trigger>
             <Trigger Property="IsMouseOver" Value="True">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
-                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" To="#E81123"/>
+                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" 
+                                            To="#E81123"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
+                <Trigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" 
+                                            To="#F3F3F3"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
     </Style>
-    
+
+    <!--
+        General template for all Dali windows.
+    -->
     <ControlTemplate x:Key="DaliWindowTemplate" TargetType="{x:Type local:DaliWindow}">
         <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
             <DockPanel LastChildFill="True" Background="{TemplateBinding Background}">
@@ -57,11 +93,11 @@
                                    VerticalAlignment="Center" Margin="8,0,8,0"/>
                         <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
                             <Button x:Name="PART_MinimizeButton" Content="{StaticResource MinimizeButtonPath}"
-                                    Style="{StaticResource TitleBarButtonStyle}"
+                                    Style="{StaticResource DefaultTitleBarButtonStyle}"
                                     Visibility="{TemplateBinding CanMinimize, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                             <Button x:Name="PART_MaximizeButton" Content="{StaticResource MaximizeButtonPath}"
-                                     Style="{StaticResource TitleBarButtonStyle}"
+                                    Style="{StaticResource DefaultTitleBarButtonStyle}"
                                     Visibility="{TemplateBinding CanMaximize, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
                             <Button x:Name="PART_CloseButton" Content="{StaticResource CloseButtonPath}"
@@ -89,6 +125,9 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
+    <!--
+        General style for all Dali windows.
+    -->
     <Style TargetType="{x:Type local:DaliWindow}">
         <Setter Property="Background" Value="#FFF3F3F3"/>
         <Setter Property="BorderBrush" Value="#FF0078D7"/>

@@ -8,6 +8,9 @@ using System.Windows.Data;
 
 namespace RedSharp.Dali.Controls.Windows
 {
+    /// <summary>
+    /// Base Dali window. Handles move, resize and handling toolbar buttons.
+    /// </summary>
     [TemplatePart(Name = DaliWindow.TitleBarName, Type = typeof(FrameworkElement))]
     [TemplatePart(Name = DaliWindow.CloseButtonName, Type = typeof(Button))]
     [TemplatePart(Name = DaliWindow.MinimizeButtonName, Type = typeof(Button))]
@@ -26,6 +29,7 @@ namespace RedSharp.Dali.Controls.Windows
         #region Static
         static DaliWindow()
         {
+            //Should work to automatically use styles for this type.
             DefaultStyleKeyProperty.OverrideMetadata(typeof(DaliWindow), new FrameworkPropertyMetadata(typeof(DaliWindow)));
         }
 
@@ -34,9 +38,17 @@ namespace RedSharp.Dali.Controls.Windows
         #region Depdendency properties
 
         #region CanClose property
+
+        /// <summary>
+        /// Idenifies <see cref="DaliWindow.CanClose"/> property.
+        /// </summary>
         public static readonly DependencyProperty CanCloseProperty =
                 DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));
 
+        /// <summary>
+        /// Gets or sets value that determines is window can be closed with toolbar close button.
+        /// In case of false close button isn't visible.
+        /// </summary>
         public bool CanClose
         {
             get => (bool)GetValue(CanCloseProperty);
@@ -45,9 +57,16 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region CanMaximize property
+        /// <summary>
+        /// Identifies <see cref="DaliWindow.CanMaximize"/> property.
+        /// </summary>
         public static readonly DependencyProperty CanMaximizeProperty =
                 DependencyProperty.Register(nameof(CanMaximize), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));
 
+        /// <summary>
+        /// Gets or sets value that determines is window can be maximized with toolbar maximize button.
+        /// In case of false maximize button is not visible and AeroSnap feature is not working.
+        /// </summary>
         public bool CanMaximize
         {
             get => (bool)GetValue(CanMaximizeProperty);
@@ -56,9 +75,16 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region CanMinimize property
+        /// <summary>
+        /// Identifies <see cref="DaliWindow.CanMinimize"/> property.
+        /// </summary>
         public static readonly DependencyProperty CanMinimizeProperty =
                 DependencyProperty.Register(nameof(CanMinimize), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));
 
+        /// <summary>
+        /// Gets or sets value that determines is window can be minimized with toolbar minimize button.
+        /// In case of false minimize button is not visible.
+        /// </summary>
         public bool CanMinimize
         {
             get => (bool)GetValue(CanMinimizeProperty);
@@ -67,9 +93,15 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region IsTitleBarVisible
+        /// <summary>
+        /// Identifies <see cref="DaliWindow.IsTitleBarVisible"/> property.
+        /// </summary>
         public static readonly DependencyProperty IsTitleBarVisibleProperty =
                 DependencyProperty.Register(nameof(IsTitleBarVisible), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));
 
+        /// <summary>
+        /// Gets or sets value that determines is titlebar visible.
+        /// </summary>
         public bool IsTitleBarVisible
         {
             get => (bool)GetValue(IsTitleBarVisibleProperty);
@@ -81,10 +113,16 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region Construction
+        /// <summary>
+        /// Initializes new instance of DaliWindow.
+        /// </summary>
         public DaliWindow()
         {
+            //I don't understand why style with corresponding type is not applied to window.
+            //So I have added this for automatic style application.
             SetResourceReference(StyleProperty, typeof(DaliWindow));
 
+            //WindowChromeBehavior is set here, in code to prevent setting in every derived class in XAML.
             WindowChromeBehavior behavior = new WindowChromeBehavior();
 
             BindingOperations.SetBinding(behavior,
@@ -100,6 +138,9 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Calls <see cref="FrameworkElement.OnApplyTemplate"/> and find required templated parts.
+        /// </summary>
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -123,16 +164,32 @@ namespace RedSharp.Dali.Controls.Windows
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Handles CloseButton's Click event.
+        /// </summary>
+        /// <param name="sender">Close button.</param>
+        /// <param name="e">Click event args.</param>
         private void OnCloseButtonClick(object sender, RoutedEventArgs e)
         {
             Close();
         }
 
+
+        /// <summary>
+        /// Handles MinimizeButton's Click event.
+        /// </summary>
+        /// <param name="sender">Minimize button.</param>
+        /// <param name="e">Click event args.</param>
         private void OnMinimizeButtonClick(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
 
+        /// <summary>
+        /// Handles MaximizeButtons's Click event.
+        /// </summary>
+        /// <param name="sender">Maximize button.</param>
+        /// <param name="e">Click event args.</param>
         private void OnMaximizeButtonClick(object sender, RoutedEventArgs e)
         {
             if (WindowState == WindowState.Maximized)
@@ -141,6 +198,11 @@ namespace RedSharp.Dali.Controls.Windows
                 WindowState = WindowState.Maximized;
         }
 
+        /// <summary>
+        /// Handler title bar <see cref="UIElement.MouseMove"/> event. Makes window move.
+        /// </summary>
+        /// <param name="sender">Title bar.</param>
+        /// <param name="e">Mouse event args.</param>
         private void OnWindowMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)

@@ -4,5 +4,9 @@
         <ResourceDictionary Source="../Styles/DaliWindow.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
+    <!--
+        Dictionary to include every sub dictionary with markup in this project.
+    -->
+
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 </ResourceDictionary>

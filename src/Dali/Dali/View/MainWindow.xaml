@@ -8,6 +8,6 @@
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        
     </Grid>
 </controls:DaliWindow>

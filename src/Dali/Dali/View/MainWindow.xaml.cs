@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedSharp.Dali.Controls.Windows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace RedSharp.Dali.View
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : DaliWindow
     {
         public MainWindow()
         {

@@ -4,6 +4,12 @@
              xmlns:local="clr-namespace:RedSharp.Dali"
              StartupUri="View/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/RedSharp.Dali.Controls;component/Themes/General.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <BitmapImage x:Key="AppIcon" UriSource="/Resources/Images/Icon.png"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

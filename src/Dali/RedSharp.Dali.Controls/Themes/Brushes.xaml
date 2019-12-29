@@ -14,7 +14,7 @@
     <SolidColorBrush x:Key="ButtonFocusTColor" Color="#014F8C"/>
 
     <SolidColorBrush x:Key="TitleBarButtonBackgroundBrush" Color="#F3F3F3"/>
-    <SolidColorBrush x:Key="CloseButtonBackgroundBrush" Color="#AAAAAA"/>
-
+    <SolidColorBrush x:Key="TitleBarButtonHoverBackgroundBrush" Color="#AAAAAA"/>
+    <SolidColorBrush x:Key="CloseButtonHoverBackgroundBrush" Color="#E81123"/>
 
 </ResourceDictionary>

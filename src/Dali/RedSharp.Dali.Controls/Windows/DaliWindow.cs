@@ -35,12 +35,12 @@ namespace RedSharp.Dali.Controls.Windows
 
         #endregion
 
-        #region Depdendency properties
+        #region Dependency properties
 
         #region CanClose property
 
         /// <summary>
-        /// Idenifies <see cref="DaliWindow.CanClose"/> property.
+        /// Identifies <see cref="DaliWindow.CanClose"/> property.
         /// </summary>
         public static readonly DependencyProperty CanCloseProperty =
                 DependencyProperty.Register(nameof(CanClose), typeof(bool), typeof(DaliWindow), new PropertyMetadata(true));

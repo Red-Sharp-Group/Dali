@@ -38,7 +38,7 @@
            TargetType="{x:Type Button}">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource CloseButtonBackgroundBrush}"/>
+                <Setter Property="Background" Value="{StaticResource TitleBarButtonHoverBackgroundBrush}"/>
             </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource MainTColor}"/>
@@ -55,26 +55,11 @@
     <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}" 
            TargetType="{x:Type Button}">
         <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource CloseButtonHoverBackgroundBrush}"/>
+            </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{StaticResource MainTColor}"/>
-            </Trigger>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" 
-                                            To="#E81123"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-                <Trigger.ExitActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <ColorAnimation Storyboard.TargetProperty="(Button.Background).(SolidColorBrush.Color)" Duration="0:0:.3" 
-                                            To="#F3F3F3"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.ExitActions>
             </Trigger>
         </Style.Triggers>
     </Style>

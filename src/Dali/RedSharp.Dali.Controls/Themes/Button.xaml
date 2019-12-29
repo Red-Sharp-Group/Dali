@@ -1,0 +1,37 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RedSharp.Dali.Controls.Themes"
+                    xmlns:converters="clr-namespace:RedSharp.Dali.Controls.Converters">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:ColourBrightnessConverter x:Key="ColourBrightnessConverter"/>
+    <converters:TextColorSelector x:Key="TextColorSelector"/>
+
+    <ControlTemplate x:Key="DaliButtonTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True"
+                BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                       Text="{TemplateBinding Content}" Foreground="{Binding Background, ElementName=PART_Border, Converter={StaticResource TextColorSelector}}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_Border" Property="Background" 
+                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter=0.7}"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"/>
+                <Setter TargetName="PART_Border" Property="BorderBrush" 
+                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter=0.5}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style x:Key="DaliButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Template" Value="{StaticResource DaliButtonTemplate}"/>
+    </Style>
+    
+</ResourceDictionary>

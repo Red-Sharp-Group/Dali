@@ -8,6 +8,7 @@
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Button Width="200" Height="100" Content="Press Me!" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource DaliButtonStyle}"
+                Background="{StaticResource MainTColor}"/>
     </Grid>
 </controls:DaliWindow>

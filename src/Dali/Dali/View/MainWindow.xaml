@@ -4,10 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
-        xmlns:local="clr-namespace:RedSharp.Dali.View"
+        xmlns:local="clr-namespace:RedSharp.Dali.View" FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Width="200" Height="100" Content="Press Me!" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{StaticResource DaliButton.GrayTextButton}"/>
-    </Grid>
+    <DockPanel LastChildFill="True">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
+            <Button Content="Start" Margin="0,0,16,0" Width="120" Height="32" 
+                    Style="{StaticResource DaliButton.BlueTextButton}"/>
+            <Button x:Name="LoadButton" Content="Load" Margin="0,0,16,0" Width="120" Height="32" 
+                    Style="{StaticResource DaliButton.GrayTextButton}"/>
+            <Button Content="Remove" Width="120" Height="32" 
+                    Style="{StaticResource DaliButton.GrayTextButton}"/>
+        </StackPanel>
+        <ListBox Background="Transparent" BorderBrush="Transparent"/>
+    </DockPanel>
 </controls:DaliWindow>

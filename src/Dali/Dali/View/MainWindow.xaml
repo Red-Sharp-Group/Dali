@@ -10,10 +10,10 @@
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
             <Button Content="Start" Margin="0,0,16,0" Width="120" Height="32" 
-                    Style="{StaticResource DaliButton.BlueTextButton}"/>
+                    Style="{StaticResource DaliButton.BlueTextButton}" Command="{Binding StartCommand}"/>
             <Button x:Name="LoadButton" Content="Load" Margin="0,0,16,0" Width="120" Height="32" 
-                    Style="{StaticResource DaliButton.GrayTextButton}"/>
-            <Button Content="Remove" Width="120" Height="32" 
+                    Style="{StaticResource DaliButton.GrayTextButton}" Command="{Binding LoadCommand}"/>
+            <Button Content="Remove" Width="120" Height="32" Command="{Binding RemoveCommand}" 
                     Style="{StaticResource DaliButton.GrayTextButton}"/>
         </StackPanel>
         <ListBox Background="Transparent" BorderBrush="Transparent"/>

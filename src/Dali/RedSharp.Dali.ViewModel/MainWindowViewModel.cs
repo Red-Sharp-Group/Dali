@@ -6,21 +6,38 @@ using System.Reactive;
 
 namespace RedSharp.Dali.ViewModel
 {
+    /// <summary>
+    /// View model for main application window.
+    /// </summary>
     public class MainWindowViewModel : ReactiveObject
     {
+        /// <summary>
+        /// Filter string for OpenFileDialog should be mvoed to configs.
+        /// </summary>
         private const string FilterString = "Images|*.bmp;*.jpg;*.jpeg;*.png;*.tiff";
 
-        private IDialogService _dialogService;
+        #region Fields
+        private readonly IDialogService _dialogService;
 
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
         private ReactiveCommand<Unit, Unit> _removeCommand;
 
+        #endregion
+
+        #region Construction
         public MainWindowViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
         }
 
+        #endregion
+
+        #region Commands
+
+        /// <summary>
+        /// Command that invoked to launch work window with selected images.
+        /// </summary>
         public ReactiveCommand<Unit, Unit> StartCommand
         {
             get
@@ -32,6 +49,9 @@ namespace RedSharp.Dali.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command that invoked to open files with OpenFileDialog.
+        /// </summary>
         public ReactiveCommand<Unit, Unit> LoadCommand
         {
             get
@@ -43,6 +63,9 @@ namespace RedSharp.Dali.ViewModel
             }
         }
 
+        /// <summary>
+        /// Command that invoked to remove opened images.
+        /// </summary>
         public ReactiveCommand<Unit, Unit> RemoveCommand
         {
             get
@@ -53,5 +76,6 @@ namespace RedSharp.Dali.ViewModel
                 }));
             }
         }
+        #endregion
     }
 }

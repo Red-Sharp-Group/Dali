@@ -14,7 +14,8 @@ namespace RedSharp.Dali
 {
     public partial class App : Application
     {
-        public IUnityContainer Container { get; private set; }
+        private IUnityContainer Container { get; set; }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -25,6 +26,9 @@ namespace RedSharp.Dali
             MainWindow.Show();
         }
 
+        /// <summary>
+        /// Point to create DI container and register all dependencies.
+        /// </summary>
         private void InitializeContainer()
         {
             Container = new UnityContainer();

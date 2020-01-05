@@ -9,4 +9,8 @@
     <PackageReference Include="ReactiveUI" Version="11.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RedSharp.Dali.Common\RedSharp.Dali.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,4 +1,6 @@
-﻿using RedSharp.Dali.View;
+﻿using RedSharp.Dali.Common.Interfaces.Services;
+using RedSharp.Dali.Services;
+using RedSharp.Dali.View;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,6 +28,8 @@ namespace RedSharp.Dali
         private void InitializeContainer()
         {
             Container = new UnityContainer();
+
+            Container.RegisterType<IDialogService, DialogService>();
         }
     }
 }

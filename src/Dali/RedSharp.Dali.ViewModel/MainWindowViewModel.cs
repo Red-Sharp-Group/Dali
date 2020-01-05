@@ -1,18 +1,24 @@
 ﻿using ReactiveUI;
+using RedSharp.Dali.Common.Interfaces.Services;
 using System;
+using System.Collections.Generic;
 using System.Reactive;
 
 namespace RedSharp.Dali.ViewModel
 {
     public class MainWindowViewModel : ReactiveObject
     {
+        private const string FilterString = "Images|*.bmp;*.jpg;*.jpeg;*.png;*.tiff";
+
+        private IDialogService _dialogService;
+
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
         private ReactiveCommand<Unit, Unit> _removeCommand;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IDialogService dialogService)
         {
-            
+            _dialogService = dialogService;
         }
 
         public ReactiveCommand<Unit, Unit> StartCommand
@@ -32,7 +38,7 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
                 {
-
+                    IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
                 }));
             }
         }

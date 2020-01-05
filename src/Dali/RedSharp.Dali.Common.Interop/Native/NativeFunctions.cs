@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RedSharp.Dali.Common.Interop.Native.Enums;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -29,6 +30,21 @@ namespace RedSharp.Dali.Common.Interop.Native
         (
             [In] IntPtr hWnd,
             [In] int id
+        );
+
+        [DllImport(NativeLibrariesNames.User32)]
+        internal static extern int GetWindowLong
+        (
+            [In] IntPtr hwnd,
+            [In] WindowsLong index
+        );
+
+        [DllImport(NativeLibrariesNames.User32)]
+        internal static extern int SetWindowLong
+        (
+            [In] IntPtr hwnd,
+            [In] WindowsLong index,
+            [In] int newStyle
         );
     }
 }

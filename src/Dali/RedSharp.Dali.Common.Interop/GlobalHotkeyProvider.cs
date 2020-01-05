@@ -7,8 +7,10 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
+
 using RedSharp.Dali.Common.Enums;
 using RedSharp.Dali.Common.Interfaces;
+using RedSharp.Dali.Common.Interop.Helpers;
 using RedSharp.Dali.Common.Interop.Native;
 
 namespace RedSharp.Dali.Common.Interop
@@ -71,10 +73,8 @@ namespace RedSharp.Dali.Common.Interop
             if (window is null)
                 throw new ArgumentNullException(nameof(window));
 
-            var interopHelper = new WindowInteropHelper(window);
-            
-            _windowHandle = interopHelper.Handle;
-            
+            _windowHandle = InternalWindowsHelper.GetWindowHandle(window);
+
             if (_windowHandle == IntPtr.Zero)
                 throw new InvalidOperationException("Input Window has invalid handle.");
 

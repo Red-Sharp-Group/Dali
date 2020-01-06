@@ -11,7 +11,7 @@ namespace RedSharp.Dali.Controls.Converters
     /// Finds suitable text colour based on element's background.
     /// Algorithm based on article http://alienryderflex.com/hsp.html
     /// </summary>
-    class TextColourSelector : IValueConverter
+    internal class TextColourSelector : IValueConverter
     {
         //Multipliers for every colour chanel
         private const double RedMult = .241;
@@ -23,7 +23,7 @@ namespace RedSharp.Dali.Controls.Converters
         /// </summary>
         /// <param name="colour">Background colour.</param>
         /// <returns>Black brush for bright background or white brush for dark background.</returns>
-        private SolidColorBrush ModifyColour(Color colour)
+        internal SolidColorBrush FindSuitableForeground(Color colour)
         {
             double brightness = Math.Sqrt(colour.R * colour.R * RedMult + colour.G * colour.G * GreenMult + colour.B * colour.B * BlueMult);
 
@@ -31,13 +31,13 @@ namespace RedSharp.Dali.Controls.Converters
         }
 
         /// <summary>
-        /// Wrapper on <see cref="ModifyColour(Color)"/>. Gets colour of brush and passes it to wrapped method.
+        /// Wrapper on <see cref="FindSuitableForeground(Color)"/>. Gets colour of brush and passes it to wrapped method.
         /// </summary>
         /// <param name="brush">WPF brush. Backround.</param>
-        /// <returns><see cref="ModifyColour(Color)"/> return value.</returns>
-        private SolidColorBrush ModifyBrush(SolidColorBrush brush)
+        /// <returns><see cref="FindSuitableForeground(Color)"/> return value.</returns>
+        private SolidColorBrush FindSuitableForeground(SolidColorBrush brush)
         {
-            return ModifyColour(brush.Color);
+            return FindSuitableForeground(brush.Color);
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace RedSharp.Dali.Controls.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is Color colour)
-                return ModifyColour(colour);
+                return FindSuitableForeground(colour);
             else if (value is SolidColorBrush brush)
-                return ModifyBrush(brush);
+                return FindSuitableForeground(brush);
             else
                 throw new ArgumentException("Cannot work with such colour representation");
         }
@@ -61,11 +61,6 @@ namespace RedSharp.Dali.Controls.Converters
         /// <summary>
         /// Not implemened.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

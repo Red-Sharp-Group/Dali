@@ -10,7 +10,7 @@ namespace RedSharp.Dali.Controls.Converters
     /// <summary>
     /// Converter that calculates brighter and darker colours based on given one.
     /// </summary>
-    class ColourBrightnessConverter : IValueConverter
+    internal class ColourBrightnessConverter : IValueConverter
     {
         /// <summary>
         /// Performs actual calculation of colour.
@@ -18,31 +18,31 @@ namespace RedSharp.Dali.Controls.Converters
         /// <param name="colour">Base colour.</param>
         /// <param name="coef">Coeficient of brighness. Any number more or equat to 0. Values
         /// less than 1 cause darker colour, 1 the same one, larger then 1 - brighter.</param>
-        /// <returns>Darker or brighter brush.</returns>
-        private SolidColorBrush ModifyColour(Color colour, double coef)
+        /// <returns>Darker or brighter colour.</returns>
+        internal Color ModifyColourBrightness(Color colour, double coef)
         {
             byte R, G, B;
 
-            R = Math.Min((byte)255, (byte)(colour.R * coef));
-            G = Math.Min((byte)255, (byte)(colour.G * coef));
-            B = Math.Min((byte)255, (byte)(colour.B * coef));
+            R = (byte)Math.Min(255, colour.R * coef);
+            G = (byte)Math.Min(255, colour.G * coef);
+            B = (byte)Math.Min(255, colour.B * coef);
 
-            return new SolidColorBrush(Color.FromArgb(colour.A, R, G, B));
+            return Color.FromArgb(colour.A, R, G, B);
         }
 
         /// <summary>
-        /// Wrapper on <see cref="ModifyColour(Color, double)". Gets colour of brush and passes it to
+        /// Wrapper on <see cref="ModifyColourBrightness(Color, double)". Gets colour of brush and passes it to
         /// wrapped method./>
         /// </summary>
         /// <param name="brush">WPF brush. It's opacity is multiplied by 255 to produce alpha chanel value.</param>
-        /// <param name="coef"><see cref="ModifyColour(Color, double)"/> coef description.</param>
-        /// <returns><see cref="ModifyColour(Color, double)"/> return value.</returns>
-        private SolidColorBrush ModifyBrush(SolidColorBrush brush, double coef)
+        /// <param name="coef"><see cref="ModifyColourBrightness(Color, double)"/> coef description.</param>
+        /// <returns>New darker or brighter brush.</returns>
+        private SolidColorBrush ModifyBrushBrightness(SolidColorBrush brush, double coef)
         {
             Color colour = brush.Color;
             colour.A = (byte)(brush.Opacity * 255);
 
-            return ModifyColour(colour, coef);
+            return new SolidColorBrush(ModifyColourBrightness(colour, coef));
         }
 
         /// <summary>
@@ -50,9 +50,9 @@ namespace RedSharp.Dali.Controls.Converters
         /// </summary>
         /// <param name="value">Base colour. WPF <see cref="Color"/> and <see cref="SolidColorBrush"/> is supported.</param>
         /// <param name="targetType">The type of the binding target property.</param>
-        /// <param name="parameter"><see cref="ModifyColour(Color, double)"/> coef description.</param>
+        /// <param name="parameter"><see cref="ModifyColourBrightness(Color, double)"/> coef description.</param>
         /// <param name="culture">The culture to use in the converter. Ignored here.</param>
-        /// <returns><see cref="ModifyColour(Color, double)"/> return value.</returns>
+        /// <returns><see cref="ModifyColourBrightness(Color, double)"/> return value.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             double coef;
@@ -61,15 +61,15 @@ namespace RedSharp.Dali.Controls.Converters
 
             if (value is Color colour)
             {
-                SolidColorBrush toRet = ModifyColour(colour, coef);
+                Color toRet = ModifyColourBrightness(colour, coef);
 
                 if (targetType.Equals(typeof(Color)))
-                    return toRet.Color;
-                else
                     return toRet;
+                else
+                    return new SolidColorBrush(toRet);
             }
             else if (value is SolidColorBrush brush)
-                return ModifyBrush(brush, coef);
+                return ModifyBrushBrightness(brush, coef);
             else
                 throw new ArgumentException("Cannot work with such colour representation");
         }
@@ -77,11 +77,6 @@ namespace RedSharp.Dali.Controls.Converters
         /// <summary>
         /// Not implemented now.
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="targetType"></param>
-        /// <param name="parameter"></param>
-        /// <param name="culture"></param>
-        /// <returns></returns>
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();

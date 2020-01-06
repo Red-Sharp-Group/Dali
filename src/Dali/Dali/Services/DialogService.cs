@@ -32,7 +32,7 @@ namespace RedSharp.Dali.Services
         /// </summary>
         /// <param name="dialogs"><inheritdoc/></param>
         /// <param name="dataContext"><inheritdoc/></param>
-        public void ShowDialog(DaliDialogs dialogs, object dataContext = null)
+        public void ShowDialog(DaliDialogsEnum dialogs, object dataContext = null)
         {
             ShowWindow(dialogs.ToString(), true, dataContext);
         }
@@ -102,7 +102,7 @@ namespace RedSharp.Dali.Services
         /// </summary>
         /// <param name="window"><inheritdoc/></param>
         /// <param name="dataContext"><inheritdoc/></param>
-        public void ShowWindow(DaliWindows window, object dataContext = null)
+        public void ShowWindow(DaliWindowsEnum window, object dataContext = null)
         {
             ShowWindow(window.ToString(), false, dataContext);
         }

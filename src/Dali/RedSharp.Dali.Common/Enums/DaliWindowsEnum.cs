@@ -9,7 +9,7 @@ namespace RedSharp.Dali.Common.Enums
     /// Enum should be modified after adding or removing windows that might 
     /// be shown with dialog service.
     /// </summary>
-    public enum DaliWindows
+    public enum DaliWindowsEnum
     {
     }
 }

@@ -16,7 +16,7 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// <param name="window">Window to show.</param>
         /// <param name="dataContext">DataContext for window. 
         /// If data context already set, in other way, it will not be overriden.</param>
-        void ShowWindow(DaliWindows window, object dataContext = null);
+        void ShowWindow(DaliWindowsEnum window, object dataContext = null);
 
         /// <summary>
         /// Show window as dialog with thread blocking.
@@ -24,7 +24,7 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// <param name="dialog">Dialog to show.</param>
         /// <param name="dataContext">DataContext for dialog.
         /// If data context already set, in other way, it will not be overriden.</param>
-        void ShowDialog(DaliDialogs dialog, object dataContext = null);
+        void ShowDialog(DaliDialogsEnum dialog, object dataContext = null);
 
         /// <summary>
         /// Show given message with MessageBox window. Blocks thread.

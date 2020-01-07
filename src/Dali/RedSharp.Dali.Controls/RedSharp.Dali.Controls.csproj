@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\Roboto-Medium.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="ControlzEx" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\Roboto-Medium.ttf" />
   </ItemGroup>
 
 </Project>

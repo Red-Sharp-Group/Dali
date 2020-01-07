@@ -49,7 +49,7 @@
     <!--
         Triggers for close button. With animation. As for me it's weird to have animation only for one button.
         And it might be faster. But...
-        Colors are hardcoded here becouse we need actual color for animation. I could try to get it from resource,
+        Colors are hard-coded here because we need actual color for animation. I could try to get it from resource,
         but maybe it is fine as is?
     -->
     <Style x:Key="CloseButtonStyle" BasedOn="{StaticResource TitleBarButtonStyle}" 

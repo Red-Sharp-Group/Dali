@@ -101,11 +101,7 @@
 
         <ControlTemplate.Triggers>
             <Trigger Property="WindowState" Value="Maximized">
-                <Setter TargetName="PART_MaximizeButton" Property="Content">
-                    <Setter.Value>
-                        <Image Source="{StaticResource RestoreButtonPath}" Width="11" Height="11"/>
-                    </Setter.Value>
-                </Setter>
+                <Setter TargetName="PART_MaximizeButton" Property="Content" Value="{StaticResource RestoreButtonPath}"/>
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>

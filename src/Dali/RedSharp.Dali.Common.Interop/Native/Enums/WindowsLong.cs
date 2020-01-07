@@ -4,6 +4,13 @@ using System.Text;
 
 namespace RedSharp.Dali.Common.Interop.Native.Enums
 {
+    /// <summary>
+    /// Used in the GetWindowLong and SetWindowLong functions as index value.
+    /// In the general idea this is the already predefined zero-based offset 
+    /// to the value to be retrieved from the windows structure. 
+    /// <para/>
+    /// See more: <see cref="https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-getwindowlonga"/>
+    /// </summary>
     internal enum WindowsLong : int
     {
         /// <summary>

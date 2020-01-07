@@ -4,6 +4,11 @@ using System.Text;
 
 namespace RedSharp.Dali.Common.Interop.Native.Enums
 {
+    /// <summary>
+    /// The following are the extended window styles.
+    /// <para/>
+    /// See more: <see cref="https://docs.microsoft.com/en-us/windows/win32/winmsg/extended-window-styles"/>
+    /// </summary>
     [Flags]
     internal enum WindowStylesEx : uint
     {

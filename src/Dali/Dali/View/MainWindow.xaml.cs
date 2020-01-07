@@ -1,4 +1,5 @@
 ﻿using RedSharp.Dali.Controls.Windows;
+using RedSharp.Dali.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Unity;
 
 namespace RedSharp.Dali.View
 {
@@ -21,6 +23,12 @@ namespace RedSharp.Dali.View
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        [Dependency]
+        public MainWindowViewModel ViewModel
+        {
+            set { DataContext = value; }
         }
     }
 }

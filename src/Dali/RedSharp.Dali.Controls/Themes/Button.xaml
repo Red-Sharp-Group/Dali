@@ -1,0 +1,122 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RedSharp.Dali.Controls.Themes"
+                    xmlns:converters="clr-namespace:RedSharp.Dali.Controls.Converters">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <converters:ColourBrightnessConverter x:Key="ColourBrightnessConverter"/>
+    <converters:TextColourSelector x:Key="TextColorSelector"/>
+
+    <ControlTemplate x:Key="DaliButton.DynamicTextButtonTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True"
+                BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                       Text="{TemplateBinding Content}" Foreground="{Binding Background, ElementName=PART_Border, Converter={StaticResource TextColorSelector}}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="PART_Border" Property="Background" 
+                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter=0.8}"/>
+                <Setter TargetName="PART_Border" Property="BorderBrush" 
+                        Value="{Binding Background, RelativeSource={RelativeSource Mode=Self}}"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter TargetName="PART_Border" Property="BorderThickness" Value="2"/>
+                <Setter TargetName="PART_Border" Property="BorderBrush" 
+                        Value="{Binding Background, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter=0.6}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style x:Key="DaliButton.DynamicTextButton" TargetType="{x:Type Button}">
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="{Binding Color, Source={StaticResource MainTColor}}" Offset="0"/>
+                    <GradientStop Color="{Binding Color, Source={StaticResource MainTColor}, Converter={StaticResource ColourBrightnessConverter}, ConverterParameter=0.9}" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontFamily" Value="../Resources/Fonts/#Roboto Medium"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Template" Value="{StaticResource DaliButton.DynamicTextButtonTemplate}"/>
+    </Style>
+
+
+    <ControlTemplate x:Key="DaliButton.StaticTextButtonTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="True"
+                BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                       Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="DaliButton.BlueTextButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="{StaticResource MainTColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#0078D7" Offset="0"/>
+                    <GradientStop Color="#0060AA" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontFamily" Value="../Resources/Fonts/#Roboto Medium"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Template" Value="{StaticResource DaliButton.StaticTextButtonTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#0060AA"/>
+                <Setter Property="BorderBrush" Value="#0060AA"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="BorderBrush" Value="#014F8C"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#D0D0D0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="#E2E2E2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="DaliButton.GrayTextButton" TargetType="{x:Type Button}">
+        <Setter Property="Background" Value="#E2E2E2"/>
+        <Setter Property="Foreground" Value="#373737"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#E2E2E2" Offset="0"/>
+                    <GradientStop Color="#D0D0D0" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FontFamily" Value="../Resources/Fonts/#Roboto Medium"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Template" Value="{StaticResource DaliButton.StaticTextButtonTemplate}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#D0D0D0"/>
+                <Setter Property="BorderBrush" Value="#D0D0D0"/>
+            </Trigger>
+            <Trigger Property="IsFocused" Value="True">
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="BorderBrush" Value="#BFBFBF"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#D0D0D0"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="#E2E2E2"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+</ResourceDictionary>

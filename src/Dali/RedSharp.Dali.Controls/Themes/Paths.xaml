@@ -5,21 +5,14 @@
     <Path x:Key="CloseButtonPath" Stroke="#000000" Data="M18.5 9.5L27.5 18.5M27.5 9.5L18.5 18.5"/>
     <Path x:Key="MaximizeButtonPath" Stroke="#000000" Data="M27.5 9.5H18.5V18.5H27.5V9.5Z"/>
 
-    <DrawingImage x:Key="RestoreButtonPath">
-        <DrawingImage.Drawing>
-            <GeometryDrawing>
-                <GeometryDrawing.Pen>
-                    <Pen Brush="Black" Thickness="1"/>
-                </GeometryDrawing.Pen>
-                <GeometryDrawing.Geometry>
-                    <GeometryGroup>
-                        <PathGeometry Figures="M26.5 10.5H17.5V19.5H26.5V10.5Z" FillRule="EvenOdd"/>
-                        <PathGeometry Figures="M19.5 10.5V8.5H28.5V17.5H26.5" FillRule="EvenOdd"/>
-                    </GeometryGroup>
-                </GeometryDrawing.Geometry>
-            </GeometryDrawing>
-        </DrawingImage.Drawing>
-    </DrawingImage>
+    <Path x:Key="RestoreButtonPath" Stroke="#000000">
+        <Path.Data>
+            <GeometryGroup>
+                <PathGeometry Figures="M26.5 11.5H18.5V19.5H26.5V11.5Z" />
+                <PathGeometry Figures="M20.5 11.5V9.5H28.5V17.5H26.5" />
+            </GeometryGroup>
+        </Path.Data>
+    </Path>
 
     <Path x:Key="MinimizeButtonPath" Stroke="#000000" Data="M19 14.5H29"/>
 

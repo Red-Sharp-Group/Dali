@@ -4,9 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
+        xmlns:imageSharp="clr-namespace:SixLabors.ImageSharp;assembly=SixLabors.ImageSharp"
+        xmlns:converters="clr-namespace:RedSharp.Dali.Converters"
         xmlns:local="clr-namespace:RedSharp.Dali.View" FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <converters:SharpImageToBitmapSourceConverter x:Key="SharpImageToBitmapSourceConverter"/>
+    </Window.Resources>
+    
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
             <Button Content="Start" Margin="0,0,16,0" Width="120" Height="32" 
@@ -16,6 +22,25 @@
             <Button Content="Remove" Width="120" Height="32" Command="{Binding RemoveCommand}" 
                     Style="{StaticResource DaliButton.GrayTextButton}"/>
         </StackPanel>
-        <ListBox Background="Transparent" BorderBrush="Transparent"/>
+        <ListBox Background="Transparent" BorderBrush="Transparent"
+                 ItemsSource="{Binding Images}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <DockPanel LastChildFill="False"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type imageSharp:Image}">
+                    <Image Width="64" Height="64"
+                           Source="{Binding Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </controls:DaliWindow>

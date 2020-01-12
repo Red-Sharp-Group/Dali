@@ -1,7 +1,9 @@
 ﻿using ReactiveUI;
 using RedSharp.Dali.Common.Interfaces.Services;
+using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive;
 
 namespace RedSharp.Dali.ViewModel
@@ -42,10 +44,10 @@ namespace RedSharp.Dali.ViewModel
         {
             get
             {
-                return _startCommand ?? ( _startCommand = ReactiveCommand.Create(() => 
-                {
+                return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
+               {
 
-                }));
+               }));
             }
         }
 
@@ -59,6 +61,10 @@ namespace RedSharp.Dali.ViewModel
                 return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
                 {
                     IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
+                    foreach (string file in files)
+                    {
+                        Images.Add(Image.Load(file));
+                    }
                 }));
             }
         }
@@ -76,6 +82,12 @@ namespace RedSharp.Dali.ViewModel
                 }));
             }
         }
+        #endregion
+
+        #region Public Properties
+
+        public ObservableCollection<Image> Images { get; } = new ObservableCollection<Image>();
+
         #endregion
     }
 }

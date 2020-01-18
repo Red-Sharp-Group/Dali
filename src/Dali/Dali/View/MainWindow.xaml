@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
         xmlns:imageSharp="clr-namespace:SixLabors.ImageSharp;assembly=SixLabors.ImageSharp"
+        xmlns:viewModels="clr-namespace:RedSharp.Dali.ViewModel;assembly=RedSharp.Dali.ViewModel"
         xmlns:converters="clr-namespace:RedSharp.Dali.Converters"
         xmlns:local="clr-namespace:RedSharp.Dali.View" FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
@@ -45,9 +46,9 @@
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type imageSharp:Image}">
+                <DataTemplate DataType="{x:Type viewModels:ImageItem}">
                     <Image VerticalAlignment="Top" Stretch="UniformToFill"
-                           Source="{Binding Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
+                           Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

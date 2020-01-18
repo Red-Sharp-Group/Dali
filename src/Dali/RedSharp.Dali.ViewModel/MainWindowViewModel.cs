@@ -63,7 +63,7 @@ namespace RedSharp.Dali.ViewModel
                     IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
                     foreach (string file in files)
                     {
-                        Images.Add(Image.Load(file));
+                        Images.Add(new ImageItem(file));
                     }
                 }));
             }
@@ -86,7 +86,7 @@ namespace RedSharp.Dali.ViewModel
 
         #region Public Properties
 
-        public ObservableCollection<Image> Images { get; } = new ObservableCollection<Image>();
+        public ObservableCollection<ImageItem> Images { get; } = new ObservableCollection<ImageItem>();
 
         #endregion
     }

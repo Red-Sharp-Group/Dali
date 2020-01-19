@@ -14,10 +14,9 @@ namespace RedSharp.Dali.ViewModel
     {
         public static bool CacheImages { get; set; }
 
-        private Image _image;
+        private bool _isSelectd;
         private string _path;
         private byte[] _cache;
-        private IReadOnlyCollection<byte> _readOnlyCache;
         private Image _preview;
         public ImageItem(string path)
         {
@@ -33,7 +32,7 @@ namespace RedSharp.Dali.ViewModel
                     file.Read(_cache, 0, (int)file.Length);
                 }
 
-                _readOnlyCache = new ReadOnlyCollection<byte>(_cache);
+                Buffer = new ReadOnlyCollection<byte>(_cache);
             }
         }
 
@@ -43,7 +42,7 @@ namespace RedSharp.Dali.ViewModel
                 throw new ArgumentNullException(nameof(rawBytes), "Buffer is null or empty.");
 
             _cache = rawBytes;
-            _readOnlyCache = new ReadOnlyCollection<byte>(rawBytes);
+            Buffer = new ReadOnlyCollection<byte>(rawBytes);
         }
 
         /*public ImageItem(Memory<byte> memory)
@@ -56,13 +55,7 @@ namespace RedSharp.Dali.ViewModel
             }
         }*/
 
-        public Image Image
-        {
-            get
-            {
-                return _image;
-            }
-        }
+        public Image Image { get; private set; }
 
         public string Path
         {
@@ -76,13 +69,7 @@ namespace RedSharp.Dali.ViewModel
             }
         }
 
-        public IReadOnlyCollection<byte> Buffer
-        {
-            get
-            {
-                return _readOnlyCache;
-            }
-        }
+        public IReadOnlyCollection<byte> Buffer { get; }
 
         public Image Preview
         {
@@ -92,7 +79,7 @@ namespace RedSharp.Dali.ViewModel
                 {
                     using (Image fullImage = Image.Load(Cache))
                     {
-                        _preview = fullImage.Clone(image => image.Resize(Math.Min(fullImage.Width, 128), Math.Min(fullImage.Height, 128)));
+                        _preview = fullImage.Clone(image => image.Resize(new ResizeOptions() { Mode = ResizeMode.Max, Size = new SixLabors.Primitives.Size(256, 256) }));
                     }
                 }
 
@@ -120,15 +107,27 @@ namespace RedSharp.Dali.ViewModel
             }
         }
 
+        public bool IsSelected
+        {
+            get 
+            {
+                return _isSelectd;
+            }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _isSelectd, value);
+            }
+        }
+
         public void CreateImage()
         {
-            _image = Image.Load(Cache);
+            Image = Image.Load(Cache);
         }
 
         public void Dispose()
         {
-            if (_image != null && !_image.IsDisposed)
-                _image.Dispose();
+            if (Image != null && !Image.IsDisposed)
+                Image.Dispose();
 
             if (_preview != null && !_preview.IsDisposed)
                 _preview.Dispose();

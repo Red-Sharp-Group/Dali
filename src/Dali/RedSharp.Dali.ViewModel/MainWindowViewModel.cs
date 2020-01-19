@@ -2,9 +2,12 @@
 using RedSharp.Dali.Common.Interfaces.Services;
 using SixLabors.ImageSharp;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using DynamicData.Binding;
+using RedSharp.Dali.Common.Enums;
 
 namespace RedSharp.Dali.ViewModel
 {
@@ -46,8 +49,8 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
                {
-
-               }));
+                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow);
+               }, this.WhenAnyValue(obj => obj.HasSelectedItems)));
             }
         }
 
@@ -78,13 +81,18 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _removeCommand ?? (_removeCommand = ReactiveCommand.Create(() =>
                 {
-
-                }));
+                    IEnumerable<ImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
+                    foreach (ImageItem item in selected)
+                        Images.Remove(item);
+                }, this.WhenAnyValue(obj => obj.HasItems)));
             }
         }
         #endregion
 
         #region Public Properties
+
+        public bool HasItems { get => Images.Any(); }
+        public bool HasSelectedItems { get => Images.Any(item => item.IsSelected); }
 
         public ObservableCollection<ImageItem> Images { get; } = new ObservableCollection<ImageItem>();
 

@@ -8,13 +8,15 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using DynamicData.Binding;
 using RedSharp.Dali.Common.Enums;
+using System.Reactive.Linq;
+using DynamicData;
 
 namespace RedSharp.Dali.ViewModel
 {
     /// <summary>
     /// View model for main application window.
     /// </summary>
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : ReactiveObject, IDisposable
     {
         /// <summary>
         /// Filter string for OpenFileDialog should be mvoed to configs.
@@ -23,6 +25,10 @@ namespace RedSharp.Dali.ViewModel
 
         #region Fields
         private readonly IDialogService _dialogService;
+
+        private SourceList<ImageItem> _images = new SourceList<ImageItem>();
+        private ReadOnlyObservableCollection<ImageItem> _readOnlyBuff;
+        private readonly IDisposable _imagesSubscription;
 
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
@@ -34,6 +40,8 @@ namespace RedSharp.Dali.ViewModel
         public MainWindowViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
+
+            _imagesSubscription = _images.Connect().Bind(out _readOnlyBuff).Subscribe();
         }
 
         #endregion
@@ -50,7 +58,7 @@ namespace RedSharp.Dali.ViewModel
                 return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
                {
                    _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow);
-               }, this.WhenAnyValue(obj => obj.HasSelectedItems)));
+               }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => res.Value)));
             }
         }
 
@@ -66,7 +74,7 @@ namespace RedSharp.Dali.ViewModel
                     IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
                     foreach (string file in files)
                     {
-                        Images.Add(new ImageItem(file));
+                        _images.Add(new ImageItem(file));
                     }
                 }));
             }
@@ -83,18 +91,33 @@ namespace RedSharp.Dali.ViewModel
                 {
                     IEnumerable<ImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
                     foreach (ImageItem item in selected)
-                        Images.Remove(item);
-                }, this.WhenAnyValue(obj => obj.HasItems)));
+                    {
+                        item.IsSelected = false;
+                        _images.Remove(item);
+                    }
+                }, _images.Connect().WhenPropertyChanged(item=>item.IsSelected).Select(res => res.Value)));
             }
         }
         #endregion
 
         #region Public Properties
 
-        public bool HasItems { get => Images.Any(); }
-        public bool HasSelectedItems { get => Images.Any(item => item.IsSelected); }
+        public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
 
-        public ObservableCollection<ImageItem> Images { get; } = new ObservableCollection<ImageItem>();
+        #endregion
+
+        #region Disposable
+
+        public void Dispose()
+        {
+            _imagesSubscription.Dispose();
+
+            StartCommand.Dispose();
+            LoadCommand.Dispose();
+            RemoveCommand.Dispose();
+
+            _images.Dispose();
+        }
 
         #endregion
     }

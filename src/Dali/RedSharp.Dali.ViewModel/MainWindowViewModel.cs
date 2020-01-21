@@ -26,8 +26,15 @@ namespace RedSharp.Dali.ViewModel
         #region Fields
         private readonly IDialogService _dialogService;
 
+        //Items to save open images.
+        //Actual storage. Please work with it.
         private SourceList<ImageItem> _images = new SourceList<ImageItem>();
+
+        //Buffer for public access. Here might be transformed or filtered items if 
+        //such operation will be applied.
         private ReadOnlyObservableCollection<ImageItem> _readOnlyBuff;
+
+        //Subscription holder.
         private readonly IDisposable _imagesSubscription;
 
         private ReactiveCommand<Unit, Unit> _startCommand;
@@ -101,13 +108,17 @@ namespace RedSharp.Dali.ViewModel
         #endregion
 
         #region Public Properties
-
+        /// <summary>
+        /// Collection with all opened images.
+        /// </summary>
         public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
 
         #endregion
 
         #region Disposable
-
+        /// <summary>
+        /// Disposes internal subscriptions, reactive commands and opened images.
+        /// </summary>
         public void Dispose()
         {
             _imagesSubscription.Dispose();
@@ -115,6 +126,9 @@ namespace RedSharp.Dali.ViewModel
             StartCommand.Dispose();
             LoadCommand.Dispose();
             RemoveCommand.Dispose();
+
+            foreach (ImageItem item in _images.Items)
+                item.Dispose();
 
             _images.Dispose();
         }

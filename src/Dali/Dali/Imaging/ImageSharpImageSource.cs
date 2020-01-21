@@ -15,6 +15,9 @@ namespace RedSharp.Dali.Imaging
     /// reference to what needs to be implemented: https://blogs.msdn.microsoft.com/dwayneneed/2008/06/20/implementing-a-custom-bitmapsource/
     /// </summary>
     /// <typeparam name="TPixel"></typeparam>
+    /// <remarks>
+    /// Implementation from https://github.com/jongleur1983/SharpImageSource 
+    /// Not properly commented.</remarks>
     public sealed class ImageSharpImageSource<TPixel> : BitmapSource
         where TPixel : struct, IPixel<TPixel>
     {

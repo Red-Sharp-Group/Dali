@@ -38,20 +38,19 @@ namespace RedSharp.Dali.ViewModel
         /// property is set.
         /// </summary>
         /// <param name="path">Path to file with image. File should exist.</param>
+        /// <remarks>
+        /// Throws <see cref="FileNotFoundException"/> if file is not found.
+        /// </remarks>
         public ImageItem(string path)
         {
             //We can create IOService in future to ease unit testing.
             if (!File.Exists(path))
-                throw new ArgumentException($"{nameof(path)} is not exists.");
+                throw new FileNotFoundException($"{nameof(path)} is not exists.");
 
             _path = path;
             if (CacheImages)
             {
-                using (FileStream file = File.OpenRead(path))
-                {
-                    _cache = new byte[file.Length];
-                    file.Read(_cache, 0, (int)file.Length);
-                }
+                _cache = ReadBytesFromFile(_path);
             }
         }
 
@@ -153,12 +152,7 @@ namespace RedSharp.Dali.ViewModel
                     if (string.IsNullOrEmpty(_path) || !File.Exists(_path))
                         throw new FileNotFoundException("File path is invalid. Cannot load image.");
 
-                    using (FileStream file = File.OpenRead(_path))
-                    {
-                        byte[] buffer = new byte[file.Length];
-                        file.Read(buffer, 0, (int)file.Length);
-                        return buffer;
-                    }
+                    return ReadBytesFromFile(_path);
                 }
             }
         }
@@ -176,6 +170,24 @@ namespace RedSharp.Dali.ViewModel
         {
             Image = Image.Load(Cache);
         }
+        #endregion
+
+        #region Private Methods
+        /// <summary>
+        /// Reads bytes from files.
+        /// </summary>
+        /// <param name="path">Path to file. Path is not validated.</param>
+        /// <returns>Content of file.</returns>
+        private byte[] ReadBytesFromFile(string path)
+        {
+            using (FileStream file = File.OpenRead(path))
+            {
+                byte[] buffer = new byte[file.Length];
+                file.Read(buffer, 0, (int)file.Length);
+                return buffer;
+            }
+        }
+
         #endregion
 
         #region Disposable

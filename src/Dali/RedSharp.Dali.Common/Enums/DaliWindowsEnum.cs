@@ -11,5 +11,6 @@ namespace RedSharp.Dali.Common.Enums
     /// </summary>
     public enum DaliWindowsEnum
     {
+        WorkAreaWindow
     }
 }

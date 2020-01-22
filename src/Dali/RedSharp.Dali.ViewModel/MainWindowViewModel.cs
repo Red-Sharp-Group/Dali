@@ -1,15 +1,22 @@
 ﻿using ReactiveUI;
 using RedSharp.Dali.Common.Interfaces.Services;
+using SixLabors.ImageSharp;
 using System;
+using System.Linq;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reactive;
+using DynamicData.Binding;
+using RedSharp.Dali.Common.Enums;
+using System.Reactive.Linq;
+using DynamicData;
 
 namespace RedSharp.Dali.ViewModel
 {
     /// <summary>
     /// View model for main application window.
     /// </summary>
-    public class MainWindowViewModel : ReactiveObject
+    public class MainWindowViewModel : ReactiveObject, IDisposable
     {
         /// <summary>
         /// Filter string for OpenFileDialog should be mvoed to configs.
@@ -18,6 +25,17 @@ namespace RedSharp.Dali.ViewModel
 
         #region Fields
         private readonly IDialogService _dialogService;
+
+        //Items to save open images.
+        //Actual storage. Please work with it.
+        private SourceList<ImageItem> _images = new SourceList<ImageItem>();
+
+        //Buffer for public access. Here might be transformed or filtered items if 
+        //such operation will be applied.
+        private ReadOnlyObservableCollection<ImageItem> _readOnlyBuff;
+
+        //Subscription holder.
+        private readonly IDisposable _imagesSubscription;
 
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
@@ -29,6 +47,8 @@ namespace RedSharp.Dali.ViewModel
         public MainWindowViewModel(IDialogService dialogService)
         {
             _dialogService = dialogService;
+
+            _imagesSubscription = _images.Connect().Bind(out _readOnlyBuff).Subscribe();
         }
 
         #endregion
@@ -42,10 +62,10 @@ namespace RedSharp.Dali.ViewModel
         {
             get
             {
-                return _startCommand ?? ( _startCommand = ReactiveCommand.Create(() => 
-                {
-
-                }));
+                return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
+               {
+                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow);
+               }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => res.Value)));
             }
         }
 
@@ -59,6 +79,10 @@ namespace RedSharp.Dali.ViewModel
                 return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
                 {
                     IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
+                    foreach (string file in files)
+                    {
+                        _images.Add(new ImageItem(file));
+                    }
                 }));
             }
         }
@@ -72,10 +96,43 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _removeCommand ?? (_removeCommand = ReactiveCommand.Create(() =>
                 {
-
-                }));
+                    IEnumerable<ImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
+                    foreach (ImageItem item in selected)
+                    {
+                        item.IsSelected = false;
+                        _images.Remove(item);
+                    }
+                }, _images.Connect().WhenPropertyChanged(item=>item.IsSelected).Select(res => res.Value)));
             }
         }
+        #endregion
+
+        #region Public Properties
+        /// <summary>
+        /// Collection with all opened images.
+        /// </summary>
+        public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
+
+        #endregion
+
+        #region Disposable
+        /// <summary>
+        /// Disposes internal subscriptions, reactive commands and opened images.
+        /// </summary>
+        public void Dispose()
+        {
+            _imagesSubscription.Dispose();
+
+            StartCommand.Dispose();
+            LoadCommand.Dispose();
+            RemoveCommand.Dispose();
+
+            foreach (ImageItem item in _images.Items)
+                item.Dispose();
+
+            _images.Dispose();
+        }
+
         #endregion
     }
 }

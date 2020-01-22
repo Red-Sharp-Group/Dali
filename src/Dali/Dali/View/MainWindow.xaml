@@ -4,9 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
+        xmlns:imageSharp="clr-namespace:SixLabors.ImageSharp;assembly=SixLabors.ImageSharp"
+        xmlns:viewModels="clr-namespace:RedSharp.Dali.ViewModel;assembly=RedSharp.Dali.ViewModel"
+        xmlns:converters="clr-namespace:RedSharp.Dali.Converters"
         xmlns:local="clr-namespace:RedSharp.Dali.View" FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <converters:SharpImageToBitmapSourceConverter x:Key="SharpImageToBitmapSourceConverter"/>
+    </Window.Resources>
+    
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
             <Button Content="Start" Margin="0,0,16,0" Width="120" Height="32" 
@@ -16,6 +23,36 @@
             <Button Content="Remove" Width="120" Height="32" Command="{Binding RemoveCommand}" 
                     Style="{StaticResource DaliButton.GrayTextButton}"/>
         </StackPanel>
-        <ListBox Background="Transparent" BorderBrush="Transparent"/>
+        
+        <ListBox Background="Transparent" BorderBrush="Transparent" Margin="19,15"
+                 ItemsSource="{Binding Images}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionMode="Multiple">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid IsItemsHost="True" Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                    <Setter Property="Margin" Value="15,15"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <ContentPresenter/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type viewModels:ImageItem}">
+                    <Image VerticalAlignment="Top" Stretch="UniformToFill"
+                           Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </DockPanel>
 </controls:DaliWindow>

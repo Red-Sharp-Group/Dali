@@ -61,17 +61,23 @@ namespace RedSharp.Dali.Services
         /// <param name="initialFolder"><inheritdoc/></param>
         /// <param name="filter">Filter string to show just some types of files. 
         /// Passed in format "Label|*.format1[;*.format2;*.formatN]"</param>
+        /// <param name="options">Options will be applied to open file dialog.</param>
         /// <returns><inheritdoc/></returns>
-        public IEnumerable<string> ShowOpenFileDialog(string initialFolder, string filter)
+        public IEnumerable<string> ShowOpenFileDialog(string initialFolder, 
+                                                      string filter, 
+                                                      OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
+                                                                                          OpenFileDialogOptionsEnum.CheckPathExists |
+                                                                                          OpenFileDialogOptionsEnum.Multiselect)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
                 InitialDirectory = initialFolder,
                 Filter = filter,
-                CheckFileExists = true,
-                CheckPathExists = true
+                CheckFileExists = options.HasFlag(OpenFileDialogOptionsEnum.CheckFileExists),
+                CheckPathExists = options.HasFlag(OpenFileDialogOptionsEnum.CheckPathExists),
+                Multiselect = options.HasFlag(OpenFileDialogOptionsEnum.Multiselect)
             };
-
+            
             if (openFileDialog.ShowDialog() == true)
                 return openFileDialog.FileNames;
             else

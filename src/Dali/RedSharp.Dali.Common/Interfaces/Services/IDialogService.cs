@@ -43,8 +43,11 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// </summary>
         /// <param name="initialFolder">Folder to show at launch.</param>
         /// <param name="filter">Filter string to show just some types of files.</param>
+        /// <param name="options">Options will be applied to open file dialog.</param>
         /// <returns>Set of selected file (absolute paths). Empty if no file was selected.</returns>
-        IEnumerable<string> ShowOpenFileDialog(string initialFolder, string filter);
+        IEnumerable<string> ShowOpenFileDialog(string initialFolder, string filter, OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
+                                                                                                                        OpenFileDialogOptionsEnum.CheckPathExists |
+                                                                                                                        OpenFileDialogOptionsEnum.Multiselect);
 
         /// <summary>
         /// Shows save file dialog.

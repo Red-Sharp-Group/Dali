@@ -3,6 +3,7 @@ using RedSharp.Dali.Common.Enums;
 using RedSharp.Dali.Common.Events;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +15,14 @@ namespace RedSharp.Dali.Actions
     {
         public static readonly DependencyProperty CommandProperty =
                    DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(ConvertDragAndDropArgsAction));
+
+        public static readonly IReadOnlyDictionary<string, DropTypeEnum> DataTypesMapping
+            = new ReadOnlyDictionary<string, DropTypeEnum>(new Dictionary<string, DropTypeEnum>()
+            {
+                [DataFormats.FileDrop] = DropTypeEnum.FilePath,
+                [DataFormats.Bitmap] = DropTypeEnum.Bitmap,
+                [DataFormats.Text] = DropTypeEnum.Text
+            });
 
         public ICommand Command
         {
@@ -64,12 +73,15 @@ namespace RedSharp.Dali.Actions
             throw new ArgumentException("Cannot cast value");
         }
 
-        private IDictionary<string, object> ToDragDataDictionary(IDataObject dataObject)
+        private IDictionary<DropTypeEnum, object> ToDragDataDictionary(IDataObject dataObject)
         {
-            Dictionary<string, object> dataDictionary = new Dictionary<string, object>();
+            Dictionary<DropTypeEnum, object> dataDictionary = new Dictionary<DropTypeEnum, object>();
 
-            foreach(string dataType in dataObject.GetFormats())
-                dataDictionary.Add(dataType, dataObject.GetData(dataType));
+            foreach (string dataType in DataTypesMapping.Keys)
+            {
+                if(dataObject.GetDataPresent(dataType))
+                    dataDictionary.Add(DataTypesMapping[dataType], dataObject.GetData(dataType));
+            }
 
             return dataDictionary;
         }

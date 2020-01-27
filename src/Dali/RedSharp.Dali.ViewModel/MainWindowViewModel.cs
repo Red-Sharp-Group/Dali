@@ -10,6 +10,7 @@ using DynamicData.Binding;
 using RedSharp.Dali.Common.Enums;
 using System.Reactive.Linq;
 using DynamicData;
+using RedSharp.Dali.Common.Events;
 
 namespace RedSharp.Dali.ViewModel
 {
@@ -40,6 +41,10 @@ namespace RedSharp.Dali.ViewModel
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
         private ReactiveCommand<Unit, Unit> _removeCommand;
+
+        private ReactiveCommand<DragAndDropEventArgs, Unit> _dragEnterCommand;
+        private ReactiveCommand<DragAndDropEventArgs, Unit> _dragOverCommand;
+        private ReactiveCommand<DragAndDropEventArgs, Unit> _dropCommand;
 
         #endregion
 
@@ -103,6 +108,39 @@ namespace RedSharp.Dali.ViewModel
                         _images.Remove(item);
                     }
                 }, _images.Connect().WhenPropertyChanged(item=>item.IsSelected).Select(res => res.Value)));
+            }
+        }
+
+        public ReactiveCommand<DragAndDropEventArgs, Unit> DragEnterCommand
+        {
+            get
+            {
+                return _dragEnterCommand ?? (_dragEnterCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
+                {
+                    args.Effects = DragAndDropEffectsEnum.Move;
+                }));
+            }
+        }
+
+        public ReactiveCommand<DragAndDropEventArgs, Unit> DragOverCommand
+        {
+            get
+            {
+                return _dragOverCommand ?? (_dragOverCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
+                {
+
+                }));
+            }
+        }
+
+        public ReactiveCommand<DragAndDropEventArgs, Unit> DropCommand
+        {
+            get
+            {
+                return _dropCommand ?? (_dropCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
+                {
+
+                }));
             }
         }
         #endregion

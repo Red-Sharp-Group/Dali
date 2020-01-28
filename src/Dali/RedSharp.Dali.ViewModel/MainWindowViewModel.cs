@@ -11,6 +11,7 @@ using RedSharp.Dali.Common.Enums;
 using System.Reactive.Linq;
 using DynamicData;
 using RedSharp.Dali.Common.Events;
+using System.IO;
 
 namespace RedSharp.Dali.ViewModel
 {
@@ -23,6 +24,14 @@ namespace RedSharp.Dali.ViewModel
         /// Filter string for OpenFileDialog should be mvoed to configs.
         /// </summary>
         private const string FilterString = "Images|*.bmp;*.jpg;*.jpeg;*.png;*.tiff";
+        private static readonly IReadOnlyCollection<string> SupportedFormats = new ReadOnlyCollection<string>(new[]
+        {
+            ".bmp",
+            ".jpg",
+            ".jpeg",
+            ".png",
+            ".tiff"
+        });
 
         #region Fields
         private readonly IDialogService _dialogService;
@@ -84,10 +93,8 @@ namespace RedSharp.Dali.ViewModel
                 return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
                 {
                     IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
-                    foreach (string file in files)
-                    {
-                        _images.Add(new ImageItem(file));
-                    }
+                    if (files.Any())
+                        OpenFiles(files);
                 }));
             }
         }
@@ -117,7 +124,23 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _dragEnterCommand ?? (_dragEnterCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
                 {
-                    args.Effects = DragAndDropEffectsEnum.Move;
+                    args.Effects = DragAndDropEffectsEnum.None;
+                    args.Handled = true;
+                    if (args.Data.ContainsKey(DropTypeEnum.FilePath))
+                    {
+                        string[] files = args.Data[DropTypeEnum.FilePath] as string[];
+
+                        if (files != null && files.Any() && 
+                            files.All(file => SupportedFormats.Any(ext => ext.Equals(Path.GetExtension(file), StringComparison.OrdinalIgnoreCase))))
+                        {
+                            args.Effects = DragAndDropEffectsEnum.Copy;
+                        }
+                    }
+                    else if (args.Data.ContainsKey(DropTypeEnum.Bitmap))
+                    {
+                        //ToDo
+                        //Add opening image from bitmap.
+                    }
                 }));
             }
         }
@@ -128,7 +151,23 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _dragOverCommand ?? (_dragOverCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
                 {
+                    args.Effects = DragAndDropEffectsEnum.None;
+                    args.Handled = true;
+                    if (args.Data.ContainsKey(DropTypeEnum.FilePath))
+                    {
+                        string[] files = args.Data[DropTypeEnum.FilePath] as string[];
 
+                        if (files != null && files.Any() &&
+                            files.All(file => SupportedFormats.Any(ext => ext.Equals(Path.GetExtension(file), StringComparison.OrdinalIgnoreCase))))
+                        {
+                            args.Effects = DragAndDropEffectsEnum.Copy;
+                        }
+                    }
+                    else if (args.Data.ContainsKey(DropTypeEnum.Bitmap))
+                    {
+                        //ToDo
+                        //Add opening image from bitmap.
+                    }
                 }));
             }
         }
@@ -139,7 +178,17 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _dropCommand ?? (_dropCommand = ReactiveCommand.Create<DragAndDropEventArgs>(args =>
                 {
-
+                    if (args.Effects != DragAndDropEffectsEnum.None)
+                    {
+                        if(args.Data.ContainsKey(DropTypeEnum.FilePath))
+                        {
+                            OpenFiles(args.Data[DropTypeEnum.FilePath] as IEnumerable<string>);
+                        }
+                        if (args.Data.ContainsKey(DropTypeEnum.Bitmap))
+                        {
+                            OpenFile(args.Data[DropTypeEnum.Bitmap] as MemoryStream);
+                        }
+                    }
                 }));
             }
         }
@@ -150,6 +199,23 @@ namespace RedSharp.Dali.ViewModel
         /// Collection with all opened images.
         /// </summary>
         public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
+
+        #endregion
+
+        #region Private Methods
+
+        private void OpenFiles(IEnumerable<string> files)
+        {
+            foreach (string file in files)
+            {
+                _images.Add(new ImageItem(file));
+            }
+        }
+
+        private void OpenFile(MemoryStream stream)
+        {
+            
+        }
 
         #endregion
 

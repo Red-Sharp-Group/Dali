@@ -31,7 +31,11 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DragEnter">
                     <actions:ConvertDragAndDropArgsAction Command="{Binding DragEnterCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="DragOver">
                     <actions:ConvertDragAndDropArgsAction Command="{Binding DragOverCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Drop">
                     <actions:ConvertDragAndDropArgsAction Command="{Binding DropCommand}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>

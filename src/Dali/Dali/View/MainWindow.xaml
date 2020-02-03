@@ -4,10 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
-        xmlns:imageSharp="clr-namespace:SixLabors.ImageSharp;assembly=SixLabors.ImageSharp"
         xmlns:viewModels="clr-namespace:RedSharp.Dali.ViewModel;assembly=RedSharp.Dali.ViewModel"
         xmlns:converters="clr-namespace:RedSharp.Dali.Converters"
-        xmlns:local="clr-namespace:RedSharp.Dali.View" FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
+        xmlns:actions="clr-namespace:RedSharp.Dali.Actions"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="MainWindow" Height="450" Width="800">
     <Window.Resources>
@@ -26,7 +27,18 @@
         
         <ListBox Background="Transparent" BorderBrush="Transparent" Margin="19,15"
                  ItemsSource="{Binding Images}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 SelectionMode="Multiple">
+                 SelectionMode="Multiple" AllowDrop="True">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DragEnter">
+                    <actions:ConvertDragAndDropArgsAction Command="{Binding DragEnterCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="DragOver">
+                    <actions:ConvertDragAndDropArgsAction Command="{Binding DragOverCommand}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="Drop">
+                    <actions:ConvertDragAndDropArgsAction Command="{Binding DropCommand}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <UniformGrid IsItemsHost="True" Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>

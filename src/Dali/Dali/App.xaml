@@ -5,6 +5,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/RedSharp.Dali.Controls;component/Themes/General.xaml"/>
+                <ResourceDictionary Source="Resources/Strings/Strings.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <BitmapImage x:Key="AppIcon" UriSource="/Resources/Images/Icon.png"/>

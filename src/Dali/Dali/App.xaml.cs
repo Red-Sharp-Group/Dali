@@ -36,6 +36,8 @@ namespace RedSharp.Dali
 				Dispatcher.Thread.CurrentUICulture = value;
 
 				ResourceDictionary dict = new ResourceDictionary();
+
+				//TODO: refactor to dictionary after providing localization.
 				switch (value.Name)
 				{
 					case "uk-UA":

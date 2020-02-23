@@ -1,6 +1,9 @@
-﻿using RedSharp.Dali.Common.Interfaces.Services;
+﻿using RedSharp.Dali.Common.Enums;
+using RedSharp.Dali.Common.Interfaces;
+using RedSharp.Dali.Common.Interfaces.Services;
 using RedSharp.Dali.Services;
 using RedSharp.Dali.View;
+using RedSharp.Dali.ViewModel;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -11,7 +14,7 @@ namespace RedSharp.Dali
 {
     public partial class App : Application
     {
-        private IUnityContainer Container { get; set; }
+		private IUnityContainer Container { get; set; }
 
 		/// <summary>
 		/// Current application language.
@@ -81,7 +84,14 @@ namespace RedSharp.Dali
         {
             Container = new UnityContainer();
 
+			//Services
             Container.RegisterType<IDialogService, DialogService>();
+
+			//Data providers
+			Container.RegisterInstance<ISettingsProvider>(new SettingsProvider());
+
+			//Dialogs
+			Container.RegisterType<Window, TransparentWindow>(nameof(DaliWindowsEnum.WorkAreaWindow));
         }
     }
 }

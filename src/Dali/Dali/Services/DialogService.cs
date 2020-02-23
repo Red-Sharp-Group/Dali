@@ -123,7 +123,7 @@ namespace RedSharp.Dali.Services
         /// <param name="dataContext">Data context for window.</param>
         private void ShowWindow(string key, bool isModal, object dataContext = null)
         {
-            DaliWindow window = _container.Resolve<DaliWindow>(key);
+            Window window = _container.Resolve<Window>(key);
 
             if (window.DataContext == null)
                 window.DataContext = dataContext;

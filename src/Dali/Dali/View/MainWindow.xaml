@@ -5,15 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
         xmlns:viewModels="clr-namespace:RedSharp.Dali.ViewModel;assembly=RedSharp.Dali.ViewModel"
-        xmlns:converters="clr-namespace:RedSharp.Dali.Converters"
         xmlns:actions="clr-namespace:RedSharp.Dali.Actions"
-        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:behaviors="clr-namespace:RedSharp.Dali.Behaviors"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
         mc:Ignorable="d" Icon="{StaticResource AppIcon}"
         Title="{DynamicResource WindowTitle}" Height="450" Width="800">
-    <Window.Resources>
-        <converters:SharpImageToBitmapSourceConverter x:Key="SharpImageToBitmapSourceConverter"/>
-    </Window.Resources>
+
+    <i:Interaction.Behaviors>
+        <behaviors:GlobalHotkeyProcessor/>
+    </i:Interaction.Behaviors>
     
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">

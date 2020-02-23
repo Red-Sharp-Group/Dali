@@ -12,13 +12,15 @@ using System.Reactive.Linq;
 using DynamicData;
 using RedSharp.Dali.Common.Events;
 using System.IO;
+using RedSharp.Dali.Common.Data;
+using RedSharp.Dali.Common.Interfaces;
 
 namespace RedSharp.Dali.ViewModel
 {
     /// <summary>
     /// View model for main application window.
     /// </summary>
-    public class MainWindowViewModel : ReactiveObject, IDisposable
+    public class MainWindowViewModel : ReactiveObject, IHotkeyProcessor, IDisposable
     {
         /// <summary>
         /// Filter string for OpenFileDialog should be moved to configs.
@@ -39,6 +41,8 @@ namespace RedSharp.Dali.ViewModel
 
         #region Fields
         private readonly IDialogService _dialogService;
+
+        private TransparentWindowViewModel _transparentWindowViewModel;
 
         //Items to save open images.
         //Actual storage. Please work with it.
@@ -62,9 +66,12 @@ namespace RedSharp.Dali.ViewModel
         #endregion
 
         #region Construction
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(ISettingsProvider settingsProvider,
+                                   IDialogService dialogService)
         {
             _dialogService = dialogService;
+
+            Settings = settingsProvider;
 
             _imagesSubscription = _images.Connect().Bind(out _readOnlyBuff).Subscribe();
         }
@@ -82,7 +89,11 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
                {
-                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow);
+                   if (_transparentWindowViewModel == null)
+                        _transparentWindowViewModel = new TransparentWindowViewModel(Images.First(im => im.IsSelected));
+
+                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow, _transparentWindowViewModel);
+
                }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => res.Value)));
             }
         }
@@ -173,13 +184,49 @@ namespace RedSharp.Dali.ViewModel
                 }));
             }
         }
+
         #endregion
 
         #region Public Properties
+
+        public ISettingsProvider Settings { get; }
+
+        public IEnumerable<Shortcut> Shortcuts
+        {
+            get
+            {
+                yield return Settings.CloseTransparentWindowShortcut;
+                yield return Settings.TransparencyShortcut;
+            }
+        }
+
         /// <summary>
         /// Collection with all opened images.
         /// </summary>
         public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
+
+        #endregion
+
+        #region Public Methods
+
+        public void ProcessShortcut(Shortcut shortcut)
+        {
+            if (shortcut == null)
+                throw new ArgumentNullException("Cannot process null.");
+
+            if (shortcut.Equals(Settings.CloseTransparentWindowShortcut))
+            {
+                _transparentWindowViewModel.Close();
+            }
+            else if (shortcut.Equals(Settings.TransparencyShortcut))
+            {
+                _transparentWindowViewModel.IsTransparent = !_transparentWindowViewModel.IsTransparent;
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown shortcut");
+            }
+        }
 
         #endregion
 

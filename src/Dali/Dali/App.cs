@@ -10,10 +10,10 @@ using System.Linq;
 using System.Windows;
 using Unity;
 
-namespace RedSharp.Dali
+namespace RedSharp.Dali.View
 {
-    public partial class App : Application
-    {
+	public class App : Application
+	{
 		private IUnityContainer Container { get; set; }
 
 		/// <summary>
@@ -30,10 +30,10 @@ namespace RedSharp.Dali
 			}
 			set
 			{
-				if (value == null) 
+				if (value == null)
 					throw new ArgumentNullException("Language value is null.");
 
-				if (value == Dispatcher.Thread.CurrentUICulture) 
+				if (value == Dispatcher.Thread.CurrentUICulture)
 					return;
 
 				Dispatcher.Thread.CurrentUICulture = value;
@@ -44,11 +44,11 @@ namespace RedSharp.Dali
 				switch (value.Name)
 				{
 					case "uk-UA":
-						dict.Source = new Uri(string.Format("Resources/Strings/Strings.{0}.xaml", value.Name), 
+						dict.Source = new Uri(string.Format("Resources/Strings/Strings.{0}.xaml", value.Name),
 											  UriKind.Relative);
 						break;
 					default:
-						dict.Source = new Uri("Resources/Strings/Strings.xaml", 
+						dict.Source = new Uri("Resources/Strings/Strings.xaml",
 											  UriKind.Relative);
 						break;
 				}
@@ -67,31 +67,36 @@ namespace RedSharp.Dali
 			}
 		}
 
+		public App()
+		{
+			Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("pack://application:,,,/RedSharp.Dali.View;component/Resources/General.xaml") });
+		}
+
 		protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
+		{
+			base.OnStartup(e);
 
-            InitializeContainer();
+			InitializeContainer();
 
-            MainWindow = Container.Resolve<MainWindow>();
-            MainWindow.Show();
-        }
+			MainWindow = Container.Resolve<MainWindow>();
+			MainWindow.Show();
+		}
 
-        /// <summary>
-        /// Point to create DI container and register all dependencies.
-        /// </summary>
-        private void InitializeContainer()
-        {
-            Container = new UnityContainer();
+		/// <summary>
+		/// Point to create DI container and register all dependencies.
+		/// </summary>
+		private void InitializeContainer()
+		{
+			Container = new UnityContainer();
 
 			//Services
-            Container.RegisterType<IDialogService, DialogService>();
+			Container.RegisterType<IDialogService, DialogService>();
 
 			//Data providers
 			Container.RegisterInstance<ISettingsProvider>(new SettingsProvider());
 
 			//Dialogs
 			Container.RegisterType<Window, TransparentWindow>(nameof(DaliWindowsEnum.WorkAreaWindow));
-        }
-    }
+		}
+	}
 }

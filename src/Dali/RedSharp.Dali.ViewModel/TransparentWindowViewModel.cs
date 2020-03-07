@@ -6,10 +6,9 @@ using System.Text;
 
 namespace RedSharp.Dali.ViewModel
 {
-    public class TransparentWindowViewModel : ReactiveObject
+    public class TransparentWindowViewModel : ReactiveObject, IDisposable
     {
         private bool _isTransparent;
-        private IImageItem _item;
 
         public bool IsTransparent
         {
@@ -17,20 +16,17 @@ namespace RedSharp.Dali.ViewModel
             set => this.RaiseAndSetIfChanged(ref _isTransparent, value);
         }
 
-        public IImageItem Item
-        {
-            get => _item;
-        }
+        public IImageItem Item { get; }
 
         public TransparentWindowViewModel(IImageItem item)
         {
-            _item = item;
-            _item.CreateImage();
+            Item = item;
+            Item.CreateImage();
         }
 
-        public void Close()
+        public void Dispose()
         {
-            
+            Item.DisposeImage();
         }
     }
 }

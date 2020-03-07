@@ -195,13 +195,18 @@ namespace RedSharp.Dali.ViewModel
         #endregion
 
         #region Disposable
+        public void DisposeImage()
+        {
+            if (Image != null && !Image.IsDisposed)
+                Image.Dispose();
+        }
+
         /// <summary>
         /// Disposes loaded image and it's preview.
         /// </summary>
         public void Dispose()
         {
-            if (Image != null && !Image.IsDisposed)
-                Image.Dispose();
+            DisposeImage();
 
             if (_preview != null && !_preview.IsDisposed)
                 _preview.Dispose();

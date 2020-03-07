@@ -9,7 +9,7 @@ using RedSharp.Dali.Common.Interfaces;
 
 namespace RedSharp.Dali.View.Behaviors
 {
-    class GlobalHotkeyProcessor : Behavior<Window>
+    class GlobalHotkeyProcessor : Behavior<Window>, IDisposable
     {
         private IList<GlobalHotkeyProvider> _globalHotkeyProviders =
             new List<GlobalHotkeyProvider>();
@@ -29,11 +29,7 @@ namespace RedSharp.Dali.View.Behaviors
             AssociatedObject.Loaded -= OnWindowLoaded;
             AssociatedObject.Unloaded -= AssociatedObject_Unloaded;
 
-            foreach (GlobalHotkeyProvider hotkeyProvider in _globalHotkeyProviders)
-            {
-                hotkeyProvider.OnHotkeyPressed -= OnHotkeyPressed;
-                hotkeyProvider.Dispose();
-            }
+            Dispose();
         }
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
@@ -43,14 +39,7 @@ namespace RedSharp.Dali.View.Behaviors
 
         private void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (_globalHotkeyProviders == null)
-                return;
-
-            foreach (GlobalHotkeyProvider hotkeyProvider in _globalHotkeyProviders)
-            {
-                hotkeyProvider.OnHotkeyPressed -= OnHotkeyPressed;
-                hotkeyProvider.Dispose();
-            }
+            Dispose();
         }
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -86,6 +75,20 @@ namespace RedSharp.Dali.View.Behaviors
                     _globalHotkeyProviders.Add(provider);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            if (_globalHotkeyProviders == null)
+                return;
+
+            foreach (GlobalHotkeyProvider hotkeyProvider in _globalHotkeyProviders)
+            {
+                hotkeyProvider.OnHotkeyPressed -= OnHotkeyPressed;
+                hotkeyProvider.Dispose();
+            }
+
+            _globalHotkeyProviders = null;
         }
     }
 }

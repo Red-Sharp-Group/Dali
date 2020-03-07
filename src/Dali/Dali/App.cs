@@ -70,6 +70,8 @@ namespace RedSharp.Dali.View
 		{
 			Container = container;
 
+			ShutdownMode = ShutdownMode.OnMainWindowClose;
+
 			Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("pack://application:,,,/RedSharp.Dali.View;component/Resources/General.xaml") });
 		}
 

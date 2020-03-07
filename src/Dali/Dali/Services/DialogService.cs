@@ -37,6 +37,21 @@ namespace RedSharp.Dali.View.Services
             ShowWindow(dialogs.ToString(), true, dataContext);
         }
 
+        ///<inheritdoc/>
+        public bool CloseWindow(object dataContext = null)
+        {
+            if (dataContext == null)
+                return false;
+
+            Window toClose = App.Current.Windows.OfType<Window>().FirstOrDefault(window => window.DataContext == dataContext);
+
+            if (toClose == null)
+                return false;
+
+            toClose.Close();
+            return true;
+        }
+
         /// <summary>
         /// <inheritdoc/>
         /// </summary>

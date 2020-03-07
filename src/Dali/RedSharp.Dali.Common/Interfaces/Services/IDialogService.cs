@@ -19,6 +19,13 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         void ShowWindow(DaliWindowsEnum window, object dataContext = null);
 
         /// <summary>
+        /// Closes window with given data context.
+        /// </summary>
+        /// <param name="dataContext">Window's data context</param>
+        /// <returns>Does window was found and closed.</returns>
+        bool CloseWindow(object dataContext = null);
+
+        /// <summary>
         /// Show window as dialog with thread blocking.
         /// </summary>
         /// <param name="dialog">Dialog to show.</param>

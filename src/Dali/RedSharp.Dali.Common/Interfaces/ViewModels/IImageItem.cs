@@ -13,5 +13,6 @@ namespace RedSharp.Dali.Common.Interfaces.ViewModels
         bool IsSelected { get; set; }
 
         void CreateImage();
+        void DisposeImage();
     }
 }

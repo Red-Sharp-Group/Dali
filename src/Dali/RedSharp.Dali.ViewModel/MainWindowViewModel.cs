@@ -218,7 +218,9 @@ namespace RedSharp.Dali.ViewModel
 
             if (shortcut.Equals(Settings.CloseTransparentWindowShortcut))
             {
-                _transparentWindowViewModel.Close();
+                _dialogService.CloseWindow(_transparentWindowViewModel);
+                _transparentWindowViewModel.Dispose();
+                _transparentWindowViewModel = null;
             }
             else if (shortcut.Equals(Settings.TransparencyShortcut))
             {

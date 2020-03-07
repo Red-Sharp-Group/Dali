@@ -1,8 +1,8 @@
 ﻿using RedSharp.Dali.Common.Enums;
 using RedSharp.Dali.Common.Interfaces;
 using RedSharp.Dali.Common.Interfaces.Services;
-using RedSharp.Dali.Services;
-using RedSharp.Dali.View;
+using RedSharp.Dali.View.Services;
+using RedSharp.Dali.View.Windows;
 using RedSharp.Dali.ViewModel;
 using System;
 using System.Globalization;

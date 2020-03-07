@@ -7,7 +7,7 @@ using RedSharp.Dali.Common.Data;
 using System.Windows.Input;
 using RedSharp.Dali.Common.Interfaces;
 
-namespace RedSharp.Dali.Behaviors
+namespace RedSharp.Dali.View.Behaviors
 {
     class GlobalHotkeyProcessor : Behavior<Window>
     {

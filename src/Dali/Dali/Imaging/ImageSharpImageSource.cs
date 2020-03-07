@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace RedSharp.Dali.Imaging
+namespace RedSharp.Dali.View.Imaging
 {
     /// <summary>
     /// reference article: http://www.i-programmer.info/programming/wpf-workings/822

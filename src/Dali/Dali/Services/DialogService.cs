@@ -8,7 +8,7 @@ using Unity;
 using RedSharp.Dali.Controls.Windows;
 using System.Windows;
 
-namespace RedSharp.Dali.Services
+namespace RedSharp.Dali.View.Services
 {
     /// <summary>
     /// Implementation of <see cref="IDialogService"/> for WPF.

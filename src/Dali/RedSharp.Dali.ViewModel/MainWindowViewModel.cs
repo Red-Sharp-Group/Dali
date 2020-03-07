@@ -216,6 +216,9 @@ namespace RedSharp.Dali.ViewModel
             if (shortcut == null)
                 throw new ArgumentNullException("Cannot process null.");
 
+            if (_transparentWindowViewModel == null)
+                return;
+
             if (shortcut.Equals(Settings.CloseTransparentWindowShortcut))
             {
                 _dialogService.CloseWindow(_transparentWindowViewModel);

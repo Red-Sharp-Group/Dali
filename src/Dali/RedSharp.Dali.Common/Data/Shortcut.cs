@@ -61,13 +61,16 @@ namespace RedSharp.Dali.Common.Data
         public static bool operator ==(Shortcut obj1, Shortcut obj2)
         {
             if (obj1 is null && obj2 is null)
+            {
                 return true;
-            else if ((obj1 is null && !(obj2 is null)) ||
-                     (!(obj1 is null) && obj2 is null))
-                return false;
-            else
+            }
+            else if (!(obj1 is null) && !(obj2 is null))
             {
                 return obj1.Equals(obj2);
+            }
+            else
+            {
+                return false;
             }
         }
 

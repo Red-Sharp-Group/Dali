@@ -14,13 +14,15 @@ using RedSharp.Dali.Common.Events;
 using System.IO;
 using RedSharp.Dali.Common.Data;
 using RedSharp.Dali.Common.Interfaces;
+using RedSharp.Dali.Common.Interfaces.ViewModels;
+using System.Windows.Input;
 
 namespace RedSharp.Dali.ViewModel
 {
     /// <summary>
     /// View model for main application window.
     /// </summary>
-    public class MainWindowViewModel : ReactiveObject, IHotkeyProcessor, IDisposable
+    public class MainWindowViewModel : ReactiveObject, IHotkeyProcessor, IMainWindowViewModel
     {
         /// <summary>
         /// Filter string for OpenFileDialog should be moved to configs.
@@ -50,7 +52,7 @@ namespace RedSharp.Dali.ViewModel
 
         //Buffer for public access. Here might be transformed or filtered items if 
         //such operation will be applied.
-        private ReadOnlyObservableCollection<ImageItem> _readOnlyBuff;
+        private ReadOnlyObservableCollection<IImageItem> _readOnlyBuff;
 
         //Subscription holder.
         private readonly IDisposable _imagesSubscription;
@@ -73,7 +75,7 @@ namespace RedSharp.Dali.ViewModel
 
             Settings = settingsProvider;
 
-            _imagesSubscription = _images.Connect().Bind(out _readOnlyBuff).Subscribe();
+            _imagesSubscription = _images.Cast(i => i as IImageItem).Bind(out _readOnlyBuff).Subscribe();
         }
 
         #endregion
@@ -123,7 +125,7 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _removeCommand ?? (_removeCommand = ReactiveCommand.Create(() =>
                 {
-                    IEnumerable<ImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
+                    IEnumerable<IImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
                     foreach (ImageItem item in selected)
                     {
                         item.IsSelected = false;
@@ -203,7 +205,7 @@ namespace RedSharp.Dali.ViewModel
         /// <summary>
         /// Collection with all opened images.
         /// </summary>
-        public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
+        public ReadOnlyObservableCollection<IImageItem> Images { get => _readOnlyBuff; }
 
         #endregion
 
@@ -285,6 +287,18 @@ namespace RedSharp.Dali.ViewModel
                 args.Effects = DragAndDropEffectsEnum.Copy;
             }
         }
+
+        #endregion
+
+        #region IMainWindowViewModel
+
+        ICommand IMainWindowViewModel.DragEnterCommand { get => DragEnterCommand; }
+        ICommand IMainWindowViewModel.DragOverCommand { get => DragOverCommand; }
+        ICommand IMainWindowViewModel.DropCommand { get => DropCommand; }
+        ICommand IMainWindowViewModel.LoadCommand { get => LoadCommand; }
+        ICommand IMainWindowViewModel.RemoveCommand { get => RemoveCommand; }
+        ICommand IMainWindowViewModel.StartCommand { get => StartCommand; }
+
 
         #endregion
 

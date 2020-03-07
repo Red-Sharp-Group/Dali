@@ -1,4 +1,5 @@
 ﻿using ReactiveUI;
+using RedSharp.Dali.Common.Interfaces.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,7 +9,7 @@ namespace RedSharp.Dali.ViewModel
     public class TransparentWindowViewModel : ReactiveObject
     {
         private bool _isTransparent;
-        private ImageItem _item;
+        private IImageItem _item;
 
         public bool IsTransparent
         {
@@ -16,12 +17,12 @@ namespace RedSharp.Dali.ViewModel
             set => this.RaiseAndSetIfChanged(ref _isTransparent, value);
         }
 
-        public ImageItem Item
+        public IImageItem Item
         {
             get => _item;
         }
 
-        public TransparentWindowViewModel(ImageItem item)
+        public TransparentWindowViewModel(IImageItem item)
         {
             _item = item;
             _item.CreateImage();

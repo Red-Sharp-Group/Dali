@@ -1,5 +1,4 @@
 ﻿using RedSharp.Dali.Common.Interop.Helpers;
-using RedSharp.Dali.ViewModel;
 using System.Windows;
 
 namespace RedSharp.Dali.View.Windows
@@ -31,7 +30,7 @@ namespace RedSharp.Dali.View.Windows
         {
             InitializeComponent();
 
-            SetBinding(IsInputTransparentProperty, nameof(TransparentWindowViewModel.IsTransparent));
+            SetBinding(IsInputTransparentProperty, "IsTransparent");
         }
 
         public bool IsInputTransparent

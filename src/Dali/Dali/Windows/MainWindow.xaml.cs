@@ -1,5 +1,5 @@
-﻿using RedSharp.Dali.Controls.Windows;
-using RedSharp.Dali.ViewModel;
+﻿using RedSharp.Dali.Common.Interfaces.ViewModels;
+using RedSharp.Dali.Controls.Windows;
 using Unity;
 
 namespace RedSharp.Dali.View.Windows
@@ -12,7 +12,7 @@ namespace RedSharp.Dali.View.Windows
         }
 
         [Dependency]
-        public MainWindowViewModel ViewModel
+        public IMainWindowViewModel ViewModel
         {
             set { DataContext = value; }
         }

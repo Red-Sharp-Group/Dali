@@ -1,14 +1,20 @@
 ﻿using System;
 using RedSharp.Dali.View;
+using Unity;
 
 namespace RedSharp.Dali
 {
     public class Dali
     {
+        private static IUnityContainer Container { get; set; }
+
         [STAThread]
         public static void Main(string[] args)
         {
-            App app = new App();
+            Container = new UnityContainer();
+            ViewModel.EntryPoint.InitilizeContainer(Container);
+
+            App app = new App(Container);
 
             app.Run();
         }

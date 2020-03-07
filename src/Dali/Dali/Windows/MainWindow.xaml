@@ -4,10 +4,10 @@
                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                      xmlns:controls="clr-namespace:RedSharp.Dali.Controls.Windows;assembly=RedSharp.Dali.Controls"
-                     xmlns:viewModels="clr-namespace:RedSharp.Dali.ViewModel;assembly=RedSharp.Dali.ViewModel"
                      xmlns:actions="clr-namespace:RedSharp.Dali.View.Actions"
                      xmlns:behaviors="clr-namespace:RedSharp.Dali.View.Behaviors"
                      xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
+                     xmlns:interfaces="clr-namespace:RedSharp.Dali.Common.Interfaces.ViewModels;assembly=RedSharp.Dali.Common"
                      FocusManager.FocusedElement="{Binding ElementName=LoadButton}"
                      mc:Ignorable="d" Icon="{StaticResource AppIcon}"
                      Title="{DynamicResource WindowTitle}" Height="450" Width="800">
@@ -61,7 +61,7 @@
                 </Style>
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type viewModels:ImageItem}">
+                <DataTemplate DataType="{x:Type interfaces:IImageItem}">
                     <Image VerticalAlignment="Top" Stretch="UniformToFill"
                            Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
                 </DataTemplate>

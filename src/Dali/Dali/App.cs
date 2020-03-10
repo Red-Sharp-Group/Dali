@@ -13,6 +13,8 @@ namespace RedSharp.Dali.View
 {
 	public class App : Application
 	{
+		private static readonly string ApplicationResourceDictionary = "pack://application:,,,/RedSharp.Dali.View;component/Resources/General.xaml";
+
 		private IUnityContainer Container { get; }
 
 		/// <summary>
@@ -66,13 +68,18 @@ namespace RedSharp.Dali.View
 			}
 		}
 
+		/// <summary>
+		/// Constructs object of <see cref="App"/> class.
+		/// </summary>
+		/// <param name="container">DI container.</param>
 		public App(IUnityContainer container)
 		{
 			Container = container;
 
+			//There is no xaml file to set properties and resources for application.
 			ShutdownMode = ShutdownMode.OnMainWindowClose;
 
-			Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri("pack://application:,,,/RedSharp.Dali.View;component/Resources/General.xaml") });
+			Resources.MergedDictionaries.Add(new ResourceDictionary() { Source = new Uri(ApplicationResourceDictionary) });
 		}
 
 		protected override void OnStartup(StartupEventArgs e)

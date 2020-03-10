@@ -10,8 +10,15 @@ using RedSharp.Dali.Common.Enums;
 
 namespace RedSharp.Dali.View.Behaviors
 {
+    /// <summary>
+    /// Wraps functionality of <see cref="GlobalHotkeyProvider"/> and makes it possible to 
+    /// process it on DataContext of assosiated object.
+    /// </summary>
     class GlobalHotkeyProcessor : Behavior<Window>, IDisposable
     {
+        /// <summary>
+        /// List of all registered providers.
+        /// </summary>
         private IList<GlobalHotkeyProvider> _globalHotkeyProviders =
             new List<GlobalHotkeyProvider>();
 
@@ -35,6 +42,7 @@ namespace RedSharp.Dali.View.Behaviors
 
         private void OnWindowLoaded(object sender, RoutedEventArgs e)
         {
+            //It possible to get native HWND only after window is loaded.
             RegisterHotkeys();
         }
 
@@ -45,12 +53,13 @@ namespace RedSharp.Dali.View.Behaviors
 
         private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
+            //Maybe old ones should be freed here?
             if (AssociatedObject.IsLoaded)
                 RegisterHotkeys();
         }
 
 
-        private void OnHotkeyPressed(Common.Enums.HotkeyModifier arg1, Key arg2)
+        private void OnHotkeyPressed(HotkeyModifier arg1, Key arg2)
         {
             IHotkeyProcessor processor = AssociatedObject.DataContext as IHotkeyProcessor;
 

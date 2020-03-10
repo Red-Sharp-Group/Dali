@@ -5,17 +5,33 @@ using System.Text;
 
 namespace RedSharp.Dali.Common.Data
 {
+    /// <summary>
+    /// Represent a shortcut with key and some modifier.
+    /// </summary>
     public class Shortcut
     {
-        public KeyEnum Key { get; }
-        public HotkeyModifier Modifier { get; }
 
+        #region Public properties
+        /// <summary>
+        /// Actual key.
+        /// </summary>
+        public KeyEnum Key { get; }
+
+        /// <summary>
+        /// Shortcut modifier.
+        /// </summary>
+        public HotkeyModifier Modifier { get; }
+        #endregion
+
+        #region Construction
         public Shortcut(KeyEnum key, HotkeyModifier modifier)
         {
             Key = key;
             Modifier = modifier;
         }
+        #endregion
 
+        #region Equality
         public override bool Equals(object obj)
         {
             if (obj is Shortcut shortcut)
@@ -59,5 +75,7 @@ namespace RedSharp.Dali.Common.Data
         {
             return !(obj1 == obj2);
         }
+
+        #endregion
     }
 }

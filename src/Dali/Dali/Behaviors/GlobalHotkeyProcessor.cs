@@ -6,6 +6,7 @@ using RedSharp.Dali.Common.Interop;
 using RedSharp.Dali.Common.Data;
 using System.Windows.Input;
 using RedSharp.Dali.Common.Interfaces;
+using RedSharp.Dali.Common.Enums;
 
 namespace RedSharp.Dali.View.Behaviors
 {
@@ -54,7 +55,7 @@ namespace RedSharp.Dali.View.Behaviors
             IHotkeyProcessor processor = AssociatedObject.DataContext as IHotkeyProcessor;
 
             if(processor != null)
-                processor.ProcessShortcut(new Shortcut((int)arg2, arg1));   
+                processor.ProcessShortcut(new Shortcut((KeyEnum)arg2, arg1));   
         }
 
         private void RegisterHotkeys()

@@ -7,10 +7,10 @@ namespace RedSharp.Dali.Common.Data
 {
     public class Shortcut
     {
-        public int Key { get; }
+        public KeyEnum Key { get; }
         public HotkeyModifier Modifier { get; }
 
-        public Shortcut(int key, HotkeyModifier modifier)
+        public Shortcut(KeyEnum key, HotkeyModifier modifier)
         {
             Key = key;
             Modifier = modifier;

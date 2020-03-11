@@ -7,14 +7,22 @@ using System.Windows;
 
 namespace RedSharp.Dali.View.Behaviors
 {
+    /// <summary>
+    /// Allows to make window transparent for all input events.
+    /// </summary>
     class InputTransparencyBehavior : Behavior<Window>
     {
-        private static string IsInputTransparentPropertyName = "IsInputTransparent";
-
+        /// <summary>
+        /// Backing property for <seealso cref="IsInputTransparent"/>.
+        /// </summary>
         public static readonly DependencyProperty IsInputTransparentProperty =
-            DependencyProperty.Register(IsInputTransparentPropertyName, typeof(bool), typeof(InputTransparencyBehavior),
+            DependencyProperty.Register(nameof(IsInputTransparent), typeof(bool), typeof(InputTransparencyBehavior),
                 new PropertyMetadata(true, IsInputTransparentPropertyChanged));
 
+
+        /// <summary>
+        /// Gets or sets value that indicates is window transparent for input events.
+        /// </summary>
         public bool IsInputTransparent
         {
             get => (bool)GetValue(IsInputTransparentProperty);

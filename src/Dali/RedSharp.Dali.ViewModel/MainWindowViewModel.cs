@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using RedSharp.Dali.Common.Interfaces.Services;
-using SixLabors.ImageSharp;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -83,7 +82,7 @@ namespace RedSharp.Dali.ViewModel
         #region Commands
 
         /// <summary>
-        /// Command that invoked to launch work window with selected images.
+        /// Actual implementation of <see cref="IMainWindowViewModel.StartCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> StartCommand
         {
@@ -101,7 +100,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked to open files with OpenFileDialog.
+        /// Actual implementation of <see cref="IMainWindowViewModel.LoadCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> LoadCommand
         {
@@ -117,7 +116,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked to remove opened images.
+        /// Actual implementation of <see cref="IMainWindowViewModel.RemoveCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> RemoveCommand
         {
@@ -136,7 +135,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is draged onto image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DragEnterCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DragEnterCommand
         {
@@ -150,7 +149,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is draged over the image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DragOverCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DragOverCommand
         {
@@ -164,7 +163,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is droped onto image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DropCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DropCommand
         {
@@ -191,8 +190,10 @@ namespace RedSharp.Dali.ViewModel
 
         #region Public Properties
 
+        /// <inheritdoc/>
         public ISettingsProvider Settings { get; }
 
+        /// <inheritdoc/>
         public IEnumerable<Shortcut> Shortcuts
         {
             get
@@ -202,15 +203,14 @@ namespace RedSharp.Dali.ViewModel
             }
         }
 
-        /// <summary>
-        /// Collection with all opened images.
-        /// </summary>
+        /// <inheritdoc/>
         public ReadOnlyObservableCollection<IImageItem> Images { get => _readOnlyBuff; }
 
         #endregion
 
         #region Public Methods
 
+        /// <inheritdoc/>
         public void ProcessShortcut(Shortcut shortcut)
         {
             if (shortcut == null)
@@ -297,11 +297,22 @@ namespace RedSharp.Dali.ViewModel
 
         #region IMainWindowViewModel
 
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.DragEnterCommand { get => DragEnterCommand; }
+        
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.DragOverCommand { get => DragOverCommand; }
+
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.DropCommand { get => DropCommand; }
+
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.LoadCommand { get => LoadCommand; }
+
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.RemoveCommand { get => RemoveCommand; }
+
+        ///<inheritdoc/>
         ICommand IMainWindowViewModel.StartCommand { get => StartCommand; }
 
 

@@ -1,5 +1,8 @@
 ﻿namespace RedSharp.Dali.Common.Enums
 {
+    /// <summary>
+    /// Platform independent representation of keyboard keys. Taken from Avalonia Project.
+    /// </summary>
     public enum KeyEnum
     {
         /// <summary>

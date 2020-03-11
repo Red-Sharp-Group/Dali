@@ -27,11 +27,8 @@ namespace RedSharp.Dali.View.Services
         #endregion
 
         #region Public methods
-        /// <summary>
+
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="dialogs"><inheritdoc/></param>
-        /// <param name="dataContext"><inheritdoc/></param>
         public void ShowDialog(DaliDialogsEnum dialogs, object dataContext = null)
         {
             ShowWindow(dialogs.ToString(), true, dataContext);
@@ -52,14 +49,7 @@ namespace RedSharp.Dali.View.Services
             return true;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="title"><inheritdoc/></param>
-        /// <param name="message"><inheritdoc/></param>
-        /// <param name="icon"><inheritdoc/></param>
-        /// <param name="buttons"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public Common.Enums.MessageBoxResult ShowMessageBox(string title, string message, MessageBoxIcon icon, IDictionary<Common.Enums.MessageBoxResult, string> buttons)
         {
             System.Windows.MessageBoxResult rez = MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -99,11 +89,7 @@ namespace RedSharp.Dali.View.Services
                 return Enumerable.Empty<string>();
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="initialFolder"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public string ShowSaveFileDialog(string initialFolder)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
@@ -118,11 +104,7 @@ namespace RedSharp.Dali.View.Services
                 return null;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="window"><inheritdoc/></param>
-        /// <param name="dataContext"><inheritdoc/></param>
         public void ShowWindow(DaliWindowsEnum window, object dataContext = null)
         {
             ShowWindow(window.ToString(), false, dataContext);

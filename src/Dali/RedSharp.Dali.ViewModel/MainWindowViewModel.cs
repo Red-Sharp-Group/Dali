@@ -1,6 +1,5 @@
 ﻿using ReactiveUI;
 using RedSharp.Dali.Common.Interfaces.Services;
-using SixLabors.ImageSharp;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -12,13 +11,17 @@ using System.Reactive.Linq;
 using DynamicData;
 using RedSharp.Dali.Common.Events;
 using System.IO;
+using RedSharp.Dali.Common.Data;
+using RedSharp.Dali.Common.Interfaces;
+using RedSharp.Dali.Common.Interfaces.ViewModels;
+using System.Windows.Input;
 
 namespace RedSharp.Dali.ViewModel
 {
     /// <summary>
     /// View model for main application window.
     /// </summary>
-    public class MainWindowViewModel : ReactiveObject, IDisposable
+    public class MainWindowViewModel : ReactiveObject, IHotkeyProcessor, IMainWindowViewModel
     {
         /// <summary>
         /// Filter string for OpenFileDialog should be moved to configs.
@@ -40,13 +43,15 @@ namespace RedSharp.Dali.ViewModel
         #region Fields
         private readonly IDialogService _dialogService;
 
+        private TransparentWindowViewModel _transparentWindowViewModel;
+
         //Items to save open images.
         //Actual storage. Please work with it.
         private SourceList<ImageItem> _images = new SourceList<ImageItem>();
 
         //Buffer for public access. Here might be transformed or filtered items if 
         //such operation will be applied.
-        private ReadOnlyObservableCollection<ImageItem> _readOnlyBuff;
+        private ReadOnlyObservableCollection<IImageItem> _readOnlyBuff;
 
         //Subscription holder.
         private readonly IDisposable _imagesSubscription;
@@ -62,11 +67,14 @@ namespace RedSharp.Dali.ViewModel
         #endregion
 
         #region Construction
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(ISettingsProvider settingsProvider,
+                                   IDialogService dialogService)
         {
             _dialogService = dialogService;
 
-            _imagesSubscription = _images.Connect().Bind(out _readOnlyBuff).Subscribe();
+            Settings = settingsProvider;
+
+            _imagesSubscription = _images.Cast(i => i as IImageItem).Bind(out _readOnlyBuff).Subscribe();
         }
 
         #endregion
@@ -74,7 +82,7 @@ namespace RedSharp.Dali.ViewModel
         #region Commands
 
         /// <summary>
-        /// Command that invoked to launch work window with selected images.
+        /// Actual implementation of <see cref="IMainWindowViewModel.StartCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> StartCommand
         {
@@ -82,13 +90,17 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _startCommand ?? (_startCommand = ReactiveCommand.Create(() =>
                {
-                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow);
+                   if (_transparentWindowViewModel == null)
+                        _transparentWindowViewModel = new TransparentWindowViewModel(Images.First(im => im.IsSelected));
+
+                   _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow, _transparentWindowViewModel);
+
                }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => res.Value)));
             }
         }
 
         /// <summary>
-        /// Command that invoked to open files with OpenFileDialog.
+        /// Actual implementation of <see cref="IMainWindowViewModel.LoadCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> LoadCommand
         {
@@ -104,7 +116,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked to remove opened images.
+        /// Actual implementation of <see cref="IMainWindowViewModel.RemoveCommand"/>.
         /// </summary>
         public ReactiveCommand<Unit, Unit> RemoveCommand
         {
@@ -112,7 +124,7 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _removeCommand ?? (_removeCommand = ReactiveCommand.Create(() =>
                 {
-                    IEnumerable<ImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
+                    IEnumerable<IImageItem> selected = Images.Where(image => image.IsSelected).ToArray();
                     foreach (ImageItem item in selected)
                     {
                         item.IsSelected = false;
@@ -123,7 +135,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is draged onto image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DragEnterCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DragEnterCommand
         {
@@ -137,7 +149,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is draged over the image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DragOverCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DragOverCommand
         {
@@ -151,7 +163,7 @@ namespace RedSharp.Dali.ViewModel
         }
 
         /// <summary>
-        /// Command that invoked when something is droped onto image list.
+        /// Actual implementation of <see cref="IMainWindowViewModel.DropCommand"/>.
         /// </summary>
         public ReactiveCommand<DragAndDropEventArgs, Unit> DropCommand
         {
@@ -173,13 +185,55 @@ namespace RedSharp.Dali.ViewModel
                 }));
             }
         }
+
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// Collection with all opened images.
-        /// </summary>
-        public ReadOnlyObservableCollection<ImageItem> Images { get => _readOnlyBuff; }
+
+        /// <inheritdoc/>
+        public ISettingsProvider Settings { get; }
+
+        /// <inheritdoc/>
+        public IEnumerable<Shortcut> Shortcuts
+        {
+            get
+            {
+                yield return Settings.CloseTransparentWindowShortcut;
+                yield return Settings.TransparencyShortcut;
+            }
+        }
+
+        /// <inheritdoc/>
+        public ReadOnlyObservableCollection<IImageItem> Images { get => _readOnlyBuff; }
+
+        #endregion
+
+        #region Public Methods
+
+        /// <inheritdoc/>
+        public void ProcessShortcut(Shortcut shortcut)
+        {
+            if (shortcut == null)
+                throw new ArgumentNullException("Cannot process null.");
+
+            if (_transparentWindowViewModel == null)
+                return;
+
+            if (shortcut.Equals(Settings.CloseTransparentWindowShortcut))
+            {
+                _dialogService.CloseWindow(_transparentWindowViewModel);
+                _transparentWindowViewModel.Dispose();
+                _transparentWindowViewModel = null;
+            }
+            else if (shortcut.Equals(Settings.TransparencyShortcut))
+            {
+                _transparentWindowViewModel.IsTransparent = !_transparentWindowViewModel.IsTransparent;
+            }
+            else
+            {
+                throw new InvalidOperationException("Unknown shortcut");
+            }
+        }
 
         #endregion
 
@@ -238,6 +292,29 @@ namespace RedSharp.Dali.ViewModel
                 args.Effects = DragAndDropEffectsEnum.Copy;
             }
         }
+
+        #endregion
+
+        #region IMainWindowViewModel
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.DragEnterCommand { get => DragEnterCommand; }
+        
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.DragOverCommand { get => DragOverCommand; }
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.DropCommand { get => DropCommand; }
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.LoadCommand { get => LoadCommand; }
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.RemoveCommand { get => RemoveCommand; }
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.StartCommand { get => StartCommand; }
+
 
         #endregion
 

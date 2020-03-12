@@ -1,12 +1,9 @@
 ﻿using ReactiveUI;
+using RedSharp.Dali.Common.Interfaces.ViewModels;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Text;
 
 namespace RedSharp.Dali.ViewModel
 {
@@ -14,7 +11,7 @@ namespace RedSharp.Dali.ViewModel
     /// View Model for storing image.
     /// Wrapps <see cref="Image{TPixel}"/>.
     /// </summary>
-    public class ImageItem : ReactiveObject, IDisposable
+    public class ImageItem : ReactiveObject, IImageItem
     {
         #region Static
         /// <summary>
@@ -190,14 +187,26 @@ namespace RedSharp.Dali.ViewModel
 
         #endregion
 
+        #region IImageItem
+
+        object IImageItem.Image { get => Image; }
+        object IImageItem.Preview { get => Preview; }
+
+        #endregion
+
         #region Disposable
+        public void DisposeImage()
+        {
+            if (Image != null && !Image.IsDisposed)
+                Image.Dispose();
+        }
+
         /// <summary>
         /// Disposes loaded image and it's preview.
         /// </summary>
         public void Dispose()
         {
-            if (Image != null && !Image.IsDisposed)
-                Image.Dispose();
+            DisposeImage();
 
             if (_preview != null && !_preview.IsDisposed)
                 _preview.Dispose();

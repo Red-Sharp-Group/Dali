@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using System.Windows.Data;
-using RedSharp.Dali.Imaging;
+using RedSharp.Dali.View.Imaging;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
-namespace RedSharp.Dali.Converters
+namespace RedSharp.Dali.View.Converters
 {
     /// <summary>
     /// Converts <see cref="Image{TPixel}"/> into WPF compatible ImageSource. Only images with Rgba32

@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace RedSharp.Dali.Actions
+namespace RedSharp.Dali.View.Actions
 {
     /// <summary>
     /// Custom trigger action for executing command from event trigger (for drag and drop events)

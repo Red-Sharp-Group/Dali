@@ -8,7 +8,7 @@ using Unity;
 using RedSharp.Dali.Controls.Windows;
 using System.Windows;
 
-namespace RedSharp.Dali.Services
+namespace RedSharp.Dali.View.Services
 {
     /// <summary>
     /// Implementation of <see cref="IDialogService"/> for WPF.
@@ -27,24 +27,29 @@ namespace RedSharp.Dali.Services
         #endregion
 
         #region Public methods
-        /// <summary>
+
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="dialogs"><inheritdoc/></param>
-        /// <param name="dataContext"><inheritdoc/></param>
         public void ShowDialog(DaliDialogsEnum dialogs, object dataContext = null)
         {
             ShowWindow(dialogs.ToString(), true, dataContext);
         }
 
-        /// <summary>
+        ///<inheritdoc/>
+        public bool CloseWindow(object dataContext = null)
+        {
+            if (dataContext == null)
+                return false;
+
+            Window toClose = App.Current.Windows.OfType<Window>().FirstOrDefault(window => window.DataContext == dataContext);
+
+            if (toClose == null)
+                return false;
+
+            toClose.Close();
+            return true;
+        }
+
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="title"><inheritdoc/></param>
-        /// <param name="message"><inheritdoc/></param>
-        /// <param name="icon"><inheritdoc/></param>
-        /// <param name="buttons"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public Common.Enums.MessageBoxResult ShowMessageBox(string title, string message, MessageBoxIcon icon, IDictionary<Common.Enums.MessageBoxResult, string> buttons)
         {
             System.Windows.MessageBoxResult rez = MessageBox.Show(message, title, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -84,11 +89,7 @@ namespace RedSharp.Dali.Services
                 return Enumerable.Empty<string>();
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="initialFolder"><inheritdoc/></param>
-        /// <returns><inheritdoc/></returns>
         public string ShowSaveFileDialog(string initialFolder)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
@@ -103,11 +104,7 @@ namespace RedSharp.Dali.Services
                 return null;
         }
 
-        /// <summary>
         /// <inheritdoc/>
-        /// </summary>
-        /// <param name="window"><inheritdoc/></param>
-        /// <param name="dataContext"><inheritdoc/></param>
         public void ShowWindow(DaliWindowsEnum window, object dataContext = null)
         {
             ShowWindow(window.ToString(), false, dataContext);
@@ -123,7 +120,7 @@ namespace RedSharp.Dali.Services
         /// <param name="dataContext">Data context for window.</param>
         private void ShowWindow(string key, bool isModal, object dataContext = null)
         {
-            DaliWindow window = _container.Resolve<DaliWindow>(key);
+            Window window = _container.Resolve<Window>(key);
 
             if (window.DataContext == null)
                 window.DataContext = dataContext;

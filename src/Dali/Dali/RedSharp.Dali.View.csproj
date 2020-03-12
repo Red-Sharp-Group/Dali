@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x86;x64</Platforms>
-    <RootNamespace>RedSharp.Dali</RootNamespace>
-    <AssemblyName>RedSharp.Dali</AssemblyName>
+    <RootNamespace>RedSharp.Dali.View</RootNamespace>
+    <AssemblyName>RedSharp.Dali.View</AssemblyName>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -29,7 +31,6 @@
     <ProjectReference Include="..\RedSharp.Dali.Common.Interop\RedSharp.Dali.Common.Interop.csproj" />
     <ProjectReference Include="..\RedSharp.Dali.Common\RedSharp.Dali.Common.csproj" />
     <ProjectReference Include="..\RedSharp.Dali.Controls\RedSharp.Dali.Controls.csproj" />
-    <ProjectReference Include="..\RedSharp.Dali.ViewModel\RedSharp.Dali.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

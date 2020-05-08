@@ -20,9 +20,13 @@ namespace RedSharp.Dali
             Container = new UnityContainer();
             ViewModel.EntryPoint.InitilizeContainer(Container);
 
+            #if AVALONIA
+            App.Run(args);
+            #else
             App app = new App(Container);
 
             app.Run();
+            #endif
         }
     }
 }

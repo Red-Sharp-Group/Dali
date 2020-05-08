@@ -1,10 +1,17 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' != 'Unix' ">
     <UseWpf>true</UseWpf>
-    <Platforms>AnyCPU;x64</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(OS)' == 'Unix' ">
+    <DefineConstants>AVALONIA</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dali\RedSharp.Dali.View.csproj" />
     <ProjectReference Include="..\RedSharp.Dali.ViewModel\RedSharp.Dali.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' != 'Unix' ">
+    <ProjectReference Include="..\Dali\RedSharp.Dali.View.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Unix' ">
+    <ProjectReference Include="..\RedSharp.Dali.Avalonia\RedSharp.Dali.Avalonia.csproj" />
   </ItemGroup>
 
 </Project>

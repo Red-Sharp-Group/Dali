@@ -100,4 +100,80 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style Selector="Button.DaliButton">
+        <Setter Property="BorderThickness" Value="1"/>
+        <!--<Setter Property="FontFamily" Value="../Resources/Fonts/#Roboto Medium"/>-->
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border x:Name="PART_Border" BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="{TemplateBinding FontFamily}" FontSize="{TemplateBinding FontSize}"
+                                   Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.BlueTextButton">
+        <Setter Property="Background" Value="{StaticResource MainTColor}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#0078D7" Offset="0"/>
+                    <GradientStop Color="#0060AA" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.BlueTextButton:pointerover">
+        <Setter Property="Background" Value="#0060AA"/>
+        <Setter Property="BorderBrush" Value="#0060AA"/>
+    </Style>
+
+    <Style Selector="Button.BlueTextButton:focus">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="#014F8C"/>
+    </Style>
+
+    <Style Selector="Button.BlueTextButton:disabled">
+        <Setter Property="Foreground" Value="#D0D0D0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#E2E2E2"/>
+    </Style>
+
+    <Style Selector="Button.GrayTextButton">
+        <Setter Property="Background" Value="#E2E2E2"/>
+        <Setter Property="Foreground" Value="#373737"/>
+        <Setter Property="BorderBrush">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Color="#E2E2E2" Offset="0"/>
+                    <GradientStop Color="#D0D0D0" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.GrayTextButton:pointerover">
+        <Setter Property="Background" Value="#D0D0D0"/>
+        <Setter Property="BorderBrush" Value="#D0D0D0"/>
+    </Style>
+
+    <Style Selector="Button.GrayTextButton:focus">
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="BorderBrush" Value="#BFBFBF"/>
+    </Style>
+
+    <Style Selector="Button.GrayTextButton:disabled">
+        <Setter Property="Foreground" Value="#D0D0D0"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#E2E2E2"/>
+    </Style>
+
 </Styles>

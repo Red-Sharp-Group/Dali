@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
@@ -14,6 +14,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RedSharp.Dali.Common.Interop", "RedSharp.Dali.Common.Interop\RedSharp.Dali.Common.Interop.csproj", "{56E0E389-243E-45CD-822B-AA43AC1933FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedSharp.Dali", "RedSharp.Dali\RedSharp.Dali.csproj", "{4CA8BAF1-EAF7-48D0-8D23-3B3F687FF75C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedSharp.Dali.Avalonia", "RedSharp.Dali.Avalonia\RedSharp.Dali.Avalonia.csproj", "{59197C8B-BE02-4CD6-866D-7C8667D8D44C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedSharp.Dali.Avalonia.Controls", "RedSharp.Dali.Avalonia.Controls\RedSharp.Dali.Avalonia.Controls.csproj", "{4C46E384-110E-4C41-80F5-64C6E42B9A9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,14 @@ Global
 		{4CA8BAF1-EAF7-48D0-8D23-3B3F687FF75C}.Release|x64.Build.0 = Release|x64
 		{4CA8BAF1-EAF7-48D0-8D23-3B3F687FF75C}.Release|x86.ActiveCfg = Release|Any CPU
 		{4CA8BAF1-EAF7-48D0-8D23-3B3F687FF75C}.Release|x86.Build.0 = Release|Any CPU
+		{59197C8B-BE02-4CD6-866D-7C8667D8D44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59197C8B-BE02-4CD6-866D-7C8667D8D44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59197C8B-BE02-4CD6-866D-7C8667D8D44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59197C8B-BE02-4CD6-866D-7C8667D8D44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C46E384-110E-4C41-80F5-64C6E42B9A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C46E384-110E-4C41-80F5-64C6E42B9A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C46E384-110E-4C41-80F5-64C6E42B9A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C46E384-110E-4C41-80F5-64C6E42B9A9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

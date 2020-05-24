@@ -1,0 +1,103 @@
+<Styles xmlns="https://github.com/avaloniaui" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:local="clr-namespace:RedSharp.Dali.Avalonia.Controls.Windows">
+    
+    <!--
+        Style with common values for all toolbar buttons.
+    -->
+
+    <Styles.Resources>
+        <SolidColorBrush x:Key="TitleTextBrush" Color="#373737"/>
+        <SolidColorBrush x:Key="DescriptionTextBrush" Color="#545454"/>
+        <SolidColorBrush x:Key="FieldBackgroundBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="ButtonBackgroundBrush" Color="#E2E2E2"/>
+        <SolidColorBrush x:Key="HoverButtonBrush" Color="#D0D0D0"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#BFBFBF"/>
+
+        <SolidColorBrush x:Key="MainTColor" Color="#0078D7"/>
+        <SolidColorBrush x:Key="HoverTColor" Color="#0060AA"/>
+        <SolidColorBrush x:Key="ButtonFocusTColor" Color="#014F8C"/>
+
+        <SolidColorBrush x:Key="TitleBarButtonBackgroundBrush" Color="#F3F3F3"/>
+        <SolidColorBrush x:Key="TitleBarButtonHoverBackgroundBrush" Color="#AAAAAA"/>
+        <SolidColorBrush x:Key="CloseButtonHoverBackgroundBrush" Color="#E81123"/>
+    </Styles.Resources>
+
+    <Style Selector="Button.DefaultTitleBarButton">
+        <Setter Property="Background" Value="{StaticResource TitleBarButtonBackgroundBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Width" Value="46"/>
+        <Setter Property="Height" Value="27"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            HorizontalAlignment="Stretch">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          Background="{TemplateBinding Background}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style Selector="Button.DefaultTitleBarButton:pointerover">
+        <Setter Property="Background" Value="{StaticResource TitleBarButtonHoverBackgroundBrush}"/>
+    </Style>
+
+    <Style Selector="Button.DefaultTitleBarButton:active">
+        <Setter Property="Background" Value="{StaticResource MainTColor}"/>
+    </Style>
+
+    <Style Selector="Button.CloseButton:pointerover">
+        <Setter Property="Background" Value="{StaticResource CloseButtonHoverBackgroundBrush}"/>
+    </Style>
+    
+    <!--
+        General style for all Dali windows.
+    -->
+
+    <Style Selector=":is(local|DaliWindow)">
+        <Setter Property="Background" Value="#FFF3F3F3"/>
+        <!--<Setter Property="BorderBrush" Value="#FF0078D7"/>-->
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HasSystemDecorations" Value="False"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid RowDefinitions="5,*,5" ColumnDefinitions="5,*,5">
+                        <DockPanel Grid.Column="1"  Grid.Row="1"
+                                   LastChildFill="True" Background="{TemplateBinding Background}">
+                            <Grid x:Name="PART_TitleBar" DockPanel.Dock="Top" Height="27" IsVisible="{TemplateBinding IsTitleBarVisible}">
+                                <DockPanel LastChildFill="True" Background="Transparent">
+                                    <Image DockPanel.Dock="Left" Width="16" Height="16" Source="{TemplateBinding Icon}" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Button x:Name="PART_MinimizeButton" Classes="DefaultTitleBarButton" Content="Min" IsVisible="{TemplateBinding CanMinimize}"/>
+                                        <Button x:Name="PART_MaximizeButton" Classes="DefaultTitleBarButton" Content="Max" IsVisible="{TemplateBinding CanMaximize}"/>
+                                        <Button x:Name="PART_CloseButton" Classes="DefaultTitleBarButton CloseButton" Content="x" IsVisible="{TemplateBinding CanClose}"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{TemplateBinding Title}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                </DockPanel>
+                            </Grid>
+                            <ContentPresenter Content="{TemplateBinding Content}"/>
+                        </DockPanel>
+                        <Border Name="TopLeft" Background="Red"/>
+                        <Border Name="TopRight" Background="Red" Grid.Column="2" />
+                        <Border Name="BottomLeft" Background="Red" Grid.Row="2" />
+                        <Border Name="BottomRight" Background="Red"  Grid.Row="2" Grid.Column="2"/>
+                        <Border Name="Top" Background="Blue" Grid.Column="1" />
+                        <Border Name="Right" Background="Blue" Grid.Row="1"  Grid.Column="2" />
+                        <Border Name="Bottom" Background="Blue" Grid.Row="2" Grid.Column="1"  />
+                        <Border Name="Left" Background="Blue"  Grid.Row="1" />
+                    </Grid>
+                    <!--<ControlTemplate.Triggers>
+                        <Trigger Property="WindowState" Value="Maximized">
+                            <Setter TargetName="PART_MaximizeButton" Property="Content" Value="{StaticResource RestoreButtonPath}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>!-->
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</Styles>

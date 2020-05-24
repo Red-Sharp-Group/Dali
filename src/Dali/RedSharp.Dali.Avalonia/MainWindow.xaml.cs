@@ -2,13 +2,16 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
+using RedSharp.Dali.Avalonia.Controls.Windows;
+
 namespace RedSharp.Dali.View
 {
-    public class MainWindow : Window
+    public class MainWindow : DaliWindow
     {
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void InitializeComponent()

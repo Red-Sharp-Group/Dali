@@ -1,0 +1,13 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:RedSharp.Dali.Avalonia.Controls.Windows">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="Brushes.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <!--
+        General template for all Dali windows.
+    -->
+    <!--BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"-->
+    
+</ResourceDictionary>

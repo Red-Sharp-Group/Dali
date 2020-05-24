@@ -11,7 +11,7 @@ namespace RedSharp.Dali.View
         public MainWindow()
         {
             InitializeComponent();
-            
+            //ListBox listBox;
         }
 
         private void InitializeComponent()

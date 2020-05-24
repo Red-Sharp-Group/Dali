@@ -6,6 +6,7 @@
         x:Class="RedSharp.Dali.View.MainWindow"
         xmlns:local="clr-namespace:RedSharp.Dali.View"
         xmlns:controls="clr-namespace:RedSharp.Dali.Avalonia.Controls.Windows;assembly=RedSharp.Dali.Avalonia.Controls"
+        xmlns:interfaces="clr-namespace:RedSharp.Dali.Common.Interfaces.ViewModels;assembly=RedSharp.Dali.Common"
         Title="Dali">
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
@@ -17,10 +18,38 @@
                     Classes="DaliButton GrayTextButton"/>
         </StackPanel>
         
-        <!--<ListBox Background="Transparent" BorderBrush="Transparent" Margin="19,15"
-                 ItemsSource="{Binding Images}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                 SelectionMode="Multiple" AllowDrop="True">
-            <i:Interaction.Triggers>
+        <ListBox Background="Transparent" BorderBrush="Transparent" Margin="19,15"
+                 Items="{Binding Images}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionMode="Multiple" DragDrop.AllowDrop="True">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="VerticalContentAlignment" Value="Top"/>
+                    <Setter Property="Margin" Value="15,15"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <ContentPresenter Content="{TemplateBinding Content}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="{x:Type interfaces:IImageItem}">
+                    <Image VerticalAlignment="Top" Stretch="UniformToFill"
+                           Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="DragEnter">
                     <actions:ConvertDragAndDropArgsAction Command="{Binding DragEnterCommand}"/>
                 </i:EventTrigger>
@@ -30,33 +59,6 @@
                 <i:EventTrigger EventName="Drop">
                     <actions:ConvertDragAndDropArgsAction Command="{Binding DropCommand}"/>
                 </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid IsItemsHost="True" Columns="4" HorizontalAlignment="Stretch" VerticalAlignment="Top"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="VerticalAlignment" Value="Top"/>
-                    <Setter Property="VerticalContentAlignment" Value="Top"/>
-                    <Setter Property="Margin" Value="15,15"/>
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                <ContentPresenter/>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type interfaces:IImageItem}">
-                    <Image VerticalAlignment="Top" Stretch="UniformToFill"
-                           Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>-->
+            </i:Interaction.Triggers>-->
     </DockPanel>
 </controls:DaliWindow>

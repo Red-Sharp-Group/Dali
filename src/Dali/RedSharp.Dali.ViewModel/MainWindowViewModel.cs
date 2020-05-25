@@ -105,13 +105,8 @@ namespace RedSharp.Dali.ViewModel
         public ReactiveCommand<Unit, Unit> LoadCommand
         {
             get
-            {
-                return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
-                {
-                    IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
-                    if (files.Any())
-                        OpenFiles(files);
-                }));
+            {   
+                return _loadCommand ?? (_loadCommand = ReactiveCommand.CreateFromObservable(OnLoad));
             }
         }
 
@@ -238,6 +233,15 @@ namespace RedSharp.Dali.ViewModel
         #endregion
 
         #region Private Methods
+
+        private IObservable<Unit> OnLoad()
+        {
+            return Observable.StartAsync(async () => {
+                IEnumerable<string> files = await _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
+                if (files.Any())
+                    OpenFiles(files);
+            });
+        }
 
         /// <summary>
         /// Opens files. Assumes all pathes is achivable from current destination.

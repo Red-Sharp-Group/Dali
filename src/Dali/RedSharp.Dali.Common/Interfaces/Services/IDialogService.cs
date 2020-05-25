@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RedSharp.Dali.Common.Interfaces.Services
 {
@@ -52,7 +53,7 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// <param name="filter">Filter string to show just some types of files.</param>
         /// <param name="options">Options will be applied to open file dialog.</param>
         /// <returns>Set of selected file (absolute paths). Empty if no file was selected.</returns>
-        IEnumerable<string> ShowOpenFileDialog(string initialFolder, string filter, OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
+        Task<IEnumerable<string>> ShowOpenFileDialog(string initialFolder, string filter, OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
                                                                                                                         OpenFileDialogOptionsEnum.CheckPathExists |
                                                                                                                         OpenFileDialogOptionsEnum.Multiselect);
 
@@ -61,6 +62,6 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// </summary>
         /// <param name="initialFolder">Folder to show at launch.</param>
         /// <returns>Selected path to save file and null if saving was canceled.</returns>
-        string ShowSaveFileDialog(string initialFolder);
+        Task<string> ShowSaveFileDialog(string initialFolder);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using RedSharp.Dali.Common.Interfaces;
 using RedSharp.Dali.View;
 using Unity;
 
@@ -21,7 +22,12 @@ namespace RedSharp.Dali
             ViewModel.EntryPoint.InitilizeContainer(Container);
 
             #if AVALONIA
-            App.Run(args);
+            
+            IApplicationBuilder builder = new DaliApplicationBuilder();
+            builder.Configure(args)
+                   .WithDIContainer(Container)
+                   .Run(args);
+
             #else
             App app = new App(Container);
 

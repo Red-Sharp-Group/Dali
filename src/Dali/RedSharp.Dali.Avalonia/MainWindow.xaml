@@ -5,9 +5,15 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="RedSharp.Dali.View.MainWindow"
         xmlns:local="clr-namespace:RedSharp.Dali.View"
+        xmlns:converters="clr-namespace:RedSharp.Dali.View.Converters"
         xmlns:controls="clr-namespace:RedSharp.Dali.Avalonia.Controls.Windows;assembly=RedSharp.Dali.Avalonia.Controls"
         xmlns:interfaces="clr-namespace:RedSharp.Dali.Common.Interfaces.ViewModels;assembly=RedSharp.Dali.Common"
         Title="Dali">
+
+    <Window.Resources>
+        <converters:SharpImageToIBitmapConverter x:Key="SharpImageToIBitmapConverter"/>
+    </Window.Resources>
+
     <DockPanel LastChildFill="True">
         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,17,17,17" HorizontalAlignment="Right">
             <Button Content="Start" Margin="0,0,16,0" Width="120" Height="32" 
@@ -27,13 +33,6 @@
                     <Setter Property="VerticalContentAlignment" Value="Top"/>
                     <Setter Property="Margin" Value="15,15"/>
                     <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <ContentPresenter Content="{TemplateBinding Content}"/>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
             </ListBox.Styles>
             <ListBox.ItemsPanel>
@@ -42,9 +41,9 @@
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type interfaces:IImageItem}">
+                <DataTemplate>
                     <Image VerticalAlignment="Top" Stretch="UniformToFill"
-                           Source="{Binding Preview, Converter={StaticResource SharpImageToBitmapSourceConverter}}"/>
+                           Source="{Binding Preview, Converter={StaticResource SharpImageToIBitmapConverter}}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

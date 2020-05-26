@@ -60,13 +60,13 @@
 
     <Style Selector=":is(local|DaliWindow)">
         <Setter Property="Background" Value="#FFF3F3F3"/>
-        <!--<Setter Property="BorderBrush" Value="#FF0078D7"/>-->
+        <Setter Property="BorderBrush" Value="#FF0078D7"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="HasSystemDecorations" Value="False"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid RowDefinitions="5,*,5" ColumnDefinitions="5,*,5">
+                    <Grid RowDefinitions="2,*,2" ColumnDefinitions="2,*,2">
                         <DockPanel Grid.Column="1"  Grid.Row="1"
                                    LastChildFill="True" Background="{TemplateBinding Background}">
                             <Grid x:Name="PART_TitleBar" DockPanel.Dock="Top" Height="27" IsVisible="{TemplateBinding IsTitleBarVisible}">
@@ -82,14 +82,14 @@
                             </Grid>
                             <ContentPresenter Content="{TemplateBinding Content}"/>
                         </DockPanel>
-                        <Border Name="TopLeft" Background="Red"/>
-                        <Border Name="TopRight" Background="Red" Grid.Column="2" />
-                        <Border Name="BottomLeft" Background="Red" Grid.Row="2" />
-                        <Border Name="BottomRight" Background="Red"  Grid.Row="2" Grid.Column="2"/>
-                        <Border Name="Top" Background="Blue" Grid.Column="1" />
-                        <Border Name="Right" Background="Blue" Grid.Row="1"  Grid.Column="2" />
-                        <Border Name="Bottom" Background="Blue" Grid.Row="2" Grid.Column="1"  />
-                        <Border Name="Left" Background="Blue"  Grid.Row="1" />
+                        <Border Name="TopLeft" Background="{TemplateBinding BorderBrush}"/>
+                        <Border Name="TopRight" Background="{TemplateBinding BorderBrush}" Grid.Column="2" />
+                        <Border Name="BottomLeft" Background="{TemplateBinding BorderBrush}" Grid.Row="2" />
+                        <Border Name="BottomRight" Background="{TemplateBinding BorderBrush}"  Grid.Row="2" Grid.Column="2"/>
+                        <Border Name="Top" Background="{TemplateBinding BorderBrush}" Grid.Column="1" />
+                        <Border Name="Right" Background="{TemplateBinding BorderBrush}" Grid.Row="1"  Grid.Column="2" />
+                        <Border Name="Bottom" Background="{TemplateBinding BorderBrush}" Grid.Row="2" Grid.Column="1"  />
+                        <Border Name="Left" Background="{TemplateBinding BorderBrush}"  Grid.Row="1" />
                     </Grid>
                     <!--<ControlTemplate.Triggers>
                         <Trigger Property="WindowState" Value="Maximized">

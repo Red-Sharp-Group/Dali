@@ -108,7 +108,7 @@ namespace RedSharp.Dali.ViewModel
                 {
                     using (Image fullImage = Image.Load(Cache))
                     {
-                        _preview = fullImage.Clone(image => image.Resize(new ResizeOptions() { Mode = ResizeMode.Max, Size = new SixLabors.Primitives.Size(256, 256) }));
+                        _preview = fullImage.Clone(image => image.Resize(new ResizeOptions() { Mode = ResizeMode.Max, Size = new Size(256, 256) }));
                     }
                 }
 
@@ -197,7 +197,7 @@ namespace RedSharp.Dali.ViewModel
         #region Disposable
         public void DisposeImage()
         {
-            if (Image != null && !Image.IsDisposed)
+            if (Image != null)
                 Image.Dispose();
         }
 
@@ -208,7 +208,7 @@ namespace RedSharp.Dali.ViewModel
         {
             DisposeImage();
 
-            if (_preview != null && !_preview.IsDisposed)
+            if (_preview != null)
                 _preview.Dispose();
         }
         #endregion

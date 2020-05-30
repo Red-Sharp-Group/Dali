@@ -95,7 +95,7 @@ namespace RedSharp.Dali.ViewModel
 
                    _dialogService.ShowWindow(DaliWindowsEnum.WorkAreaWindow, _transparentWindowViewModel);
 
-               }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => res.Value)));
+               }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => _images.Items.Any(item => item.IsSelected))));
             }
         }
 
@@ -130,7 +130,7 @@ namespace RedSharp.Dali.ViewModel
                         item.IsSelected = false;
                         _images.Remove(item);
                     }
-                }, _images.Connect().WhenPropertyChanged(item=>item.IsSelected).Select(res => res.Value)));
+                }, _images.Connect().WhenPropertyChanged(item=>item.IsSelected).Select(res => _images.Items.Any(item => item.IsSelected))));
             }
         }
 

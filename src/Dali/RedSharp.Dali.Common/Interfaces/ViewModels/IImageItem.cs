@@ -36,6 +36,12 @@ namespace RedSharp.Dali.Common.Interfaces.ViewModels
         void CreateImage();
 
         /// <summary>
+        /// Saves image in given path.
+        /// </summary>
+        /// <param name="path">Path to save file.</param>
+        void SaveImage(string path);
+
+        /// <summary>
         /// Disposes full size image.
         /// </summary>
         void DisposeImage();

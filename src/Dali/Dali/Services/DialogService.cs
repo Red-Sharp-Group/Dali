@@ -15,6 +15,20 @@ namespace RedSharp.Dali.View.Services
     /// </summary>
     class DialogService : IDialogService
     {
+        #region Static
+
+        /// <summary>
+        /// Generates filter string for Windows system dialogs.
+        /// </summary>
+        /// <param name="formats">Dictionary with file formats (key) and it's description.</param>
+        /// <returns>Filter string for Windows system dialogs.</returns>
+        private static string GenerateFilterString(IDictionary<string, string> formats)
+        {
+            return formats.Select(item => $"{item.Value}|{item.Key}").Aggregate((accum, val) => accum += $"|{val}").Trim('|');
+        }
+
+        #endregion
+
         #region Fields
         private readonly IUnityContainer _container;
         #endregion
@@ -69,7 +83,7 @@ namespace RedSharp.Dali.View.Services
         /// <param name="options">Options will be applied to open file dialog.</param>
         /// <returns><inheritdoc/></returns>
         public IEnumerable<string> ShowOpenFileDialog(string initialFolder, 
-                                                      string filter, 
+                                                      IDictionary<string, string> formats, 
                                                       OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
                                                                                           OpenFileDialogOptionsEnum.CheckPathExists |
                                                                                           OpenFileDialogOptionsEnum.Multiselect)
@@ -77,7 +91,7 @@ namespace RedSharp.Dali.View.Services
             OpenFileDialog openFileDialog = new OpenFileDialog()
             {
                 InitialDirectory = initialFolder,
-                Filter = filter,
+                Filter = GenerateFilterString(formats),
                 CheckFileExists = options.HasFlag(OpenFileDialogOptionsEnum.CheckFileExists),
                 CheckPathExists = options.HasFlag(OpenFileDialogOptionsEnum.CheckPathExists),
                 Multiselect = options.HasFlag(OpenFileDialogOptionsEnum.Multiselect)
@@ -90,11 +104,14 @@ namespace RedSharp.Dali.View.Services
         }
 
         /// <inheritdoc/>
-        public string ShowSaveFileDialog(string initialFolder)
+        public string ShowSaveFileDialog(string initialFolder,
+                                         IDictionary<string, string> formats)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog()
             {
                 InitialDirectory = initialFolder,
+                Filter = GenerateFilterString(formats),
+                AddExtension = true,
                 CheckPathExists = true
             };
 

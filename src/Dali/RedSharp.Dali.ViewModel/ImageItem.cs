@@ -167,6 +167,39 @@ namespace RedSharp.Dali.ViewModel
         {
             Image = Image.Load(Cache);
         }
+
+        /// <inheritdoc/>
+        public void SaveImage(string path)
+        {
+            using Image image = Image.Load(Cache);
+            using FileStream fileToSave = File.Open(path, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+
+            string ext = System.IO.Path.GetExtension(path).ToLower();
+
+            switch (ext)
+            {
+                case ".png":
+                    {
+                        image.SaveAsPng(fileToSave);
+                        break;
+                    }
+                case ".jpg":
+                case ".jpeg":
+                    {
+                        image.SaveAsJpeg(fileToSave);
+                        break;
+                    }
+                case ".bmp":
+                    {
+                        image.SaveAsBmp(fileToSave);
+                        break;
+                    }
+                default:
+                    {
+                        throw new NotSupportedException("Cannot save image in this extension");
+                    }
+            }
+        }
         #endregion
 
         #region Private Methods

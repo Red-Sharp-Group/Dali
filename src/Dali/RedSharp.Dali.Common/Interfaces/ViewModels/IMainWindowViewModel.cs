@@ -17,6 +17,11 @@ namespace RedSharp.Dali.Common.Interfaces.ViewModels
         ICommand LoadCommand { get; }
 
         /// <summary>
+        /// Command that invoked to save files with SaveFileDialog.
+        /// </summary>
+        ICommand SaveCommand { get; }
+
+        /// <summary>
         /// Command that invoked to remove opened images.
         /// </summary>
         ICommand RemoveCommand { get; }

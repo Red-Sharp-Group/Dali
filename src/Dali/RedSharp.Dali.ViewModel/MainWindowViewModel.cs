@@ -24,20 +24,19 @@ namespace RedSharp.Dali.ViewModel
     public class MainWindowViewModel : ReactiveObject, IHotkeyProcessor, IMainWindowViewModel
     {
         /// <summary>
-        /// Filter string for OpenFileDialog should be moved to configs.
-        /// </summary>
-        private const string FilterString = "Images|*.bmp;*.jpg;*.jpeg;*.png;*.tiff";
-        /// <summary>
         /// List of supproted formats to check extension manually in case of drag and drop.
         /// Should be in configs too.
         /// </summary>
+        /// <remarks>
+        /// We should introduce IImageManager to work with images.
+        /// </remarks>
         private static readonly IReadOnlyCollection<string> SupportedFormats = new ReadOnlyCollection<string>(new[]
         {
             ".bmp",
             ".jpg",
             ".jpeg",
             ".png",
-            ".tiff"
+            ".gif"
         });
 
         #region Fields
@@ -59,6 +58,7 @@ namespace RedSharp.Dali.ViewModel
 
         private ReactiveCommand<Unit, Unit> _startCommand;
         private ReactiveCommand<Unit, Unit> _loadCommand;
+        private ReactiveCommand<Unit, Unit> _saveCommand;
         private ReactiveCommand<Unit, Unit> _removeCommand;
 
         private ReactiveCommand<DragAndDropEventArgs, Unit> _dragEnterCommand;
@@ -111,10 +111,34 @@ namespace RedSharp.Dali.ViewModel
             {
                 return _loadCommand ?? (_loadCommand = ReactiveCommand.Create(() =>
                 {
-                    IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FilterString);
+                    string formatsString = SupportedFormats.Select(format => $"*{format};").Aggregate((accum, val) => accum += val);
+
+                    IEnumerable<string> files = _dialogService.ShowOpenFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), new Dictionary<string, string>() { { formatsString, "Images"} });
                     if (files.Any())
                         OpenFiles(files);
                 }));
+            }
+        }
+
+        /// <summary>
+        /// Actual implamentation of <see cref="IMainWindowViewModel.SaveCommand"/>.
+        /// </summary>
+        public ReactiveCommand<Unit, Unit> SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand = ReactiveCommand.Create(() =>
+                {
+                    foreach (ImageItem item in _images.Items.Where(item => item.IsSelected))
+                    {
+                        string path = _dialogService.ShowSaveFileDialog(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), SupportedFormats.ToDictionary(val => $"*{val}", val => val.Trim('.').ToUpper()));
+
+                        if (string.IsNullOrEmpty(path))
+                            continue;
+
+                        item.SaveImage(path);
+                    }
+                }, _images.Connect().WhenPropertyChanged(item => item.IsSelected).Select(res => _images.Items.Count(im => im.IsSelected) == 1)));
             }
         }
 
@@ -308,6 +332,9 @@ namespace RedSharp.Dali.ViewModel
 
         ///<inheritdoc/>
         ICommand IMainWindowViewModel.DropCommand { get => DropCommand; }
+
+        ///<inheritdoc/>
+        ICommand IMainWindowViewModel.SaveCommand { get => SaveCommand; }
 
         ///<inheritdoc/>
         ICommand IMainWindowViewModel.LoadCommand { get => LoadCommand; }

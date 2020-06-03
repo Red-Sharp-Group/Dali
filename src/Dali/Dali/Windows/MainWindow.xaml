@@ -22,6 +22,8 @@
                     Style="{StaticResource DaliButton.BlueTextButton}" Command="{Binding StartCommand}"/>
             <Button x:Name="LoadButton" Content="Load" Margin="0,0,16,0" Width="120" Height="32" 
                     Style="{StaticResource DaliButton.GrayTextButton}" Command="{Binding LoadCommand}"/>
+            <Button x:Name="SaveButton" Content="Save" Margin="0,0,16,0" Width="120" Height="32" 
+                    Style="{StaticResource DaliButton.GrayTextButton}" Command="{Binding SaveCommand}"/>
             <Button Content="Remove" Width="120" Height="32" Command="{Binding RemoveCommand}" 
                     Style="{StaticResource DaliButton.GrayTextButton}"/>
         </StackPanel>

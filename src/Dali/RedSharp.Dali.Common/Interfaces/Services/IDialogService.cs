@@ -49,18 +49,22 @@ namespace RedSharp.Dali.Common.Interfaces.Services
         /// Shows open file dialog.
         /// </summary>
         /// <param name="initialFolder">Folder to show at launch.</param>
-        /// <param name="filter">Filter string to show just some types of files.</param>
+        /// <param name="filter">Dictionary with supported formats (keys) and it's descriptions (value).</param>
         /// <param name="options">Options will be applied to open file dialog.</param>
         /// <returns>Set of selected file (absolute paths). Empty if no file was selected.</returns>
-        IEnumerable<string> ShowOpenFileDialog(string initialFolder, string filter, OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
-                                                                                                                        OpenFileDialogOptionsEnum.CheckPathExists |
-                                                                                                                        OpenFileDialogOptionsEnum.Multiselect);
+        IEnumerable<string> ShowOpenFileDialog(string initialFolder, 
+                                               IDictionary<string, string> formats, 
+                                               OpenFileDialogOptionsEnum options = OpenFileDialogOptionsEnum.CheckFileExists |
+                                                                                   OpenFileDialogOptionsEnum.CheckPathExists |
+                                                                                   OpenFileDialogOptionsEnum.Multiselect);
 
         /// <summary>
         /// Shows save file dialog.
         /// </summary>
         /// <param name="initialFolder">Folder to show at launch.</param>
+        /// <param name="formats">Dictionary with supported formats (keys) and it's descriptions (value).</param>
         /// <returns>Selected path to save file and null if saving was canceled.</returns>
-        string ShowSaveFileDialog(string initialFolder);
+        string ShowSaveFileDialog(string initialFolder,
+                                  IDictionary<string, string> formats);
     }
 }

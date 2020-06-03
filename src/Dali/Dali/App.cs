@@ -99,6 +99,7 @@ namespace RedSharp.Dali.View
 		{
 			//Services
 			Container.RegisterType<IDialogService, DialogService>();
+			Container.RegisterFactory<IDispatcher>(container => new DispatcherService(Dispatcher));
 
 			//Dialogs
 			Container.RegisterType<Window, TransparentWindow>(nameof(DaliWindowsEnum.WorkAreaWindow));

@@ -42,6 +42,7 @@ namespace RedSharp.Dali.ViewModel
 
         #region Fields
         private readonly IDialogService _dialogService;
+        private readonly IDispatcher _dispatcher;
 
         private TransparentWindowViewModel _transparentWindowViewModel;
 
@@ -68,9 +69,11 @@ namespace RedSharp.Dali.ViewModel
 
         #region Construction
         public MainWindowViewModel(ISettingsProvider settingsProvider,
-                                   IDialogService dialogService)
+                                   IDialogService dialogService,
+                                   IDispatcher dispatcher)
         {
             _dialogService = dialogService;
+            _dispatcher = dispatcher;
 
             Settings = settingsProvider;
 
@@ -250,7 +253,7 @@ namespace RedSharp.Dali.ViewModel
 
             foreach (string file in files)
             {
-                _images.Add(new ImageItem(file));
+                _dispatcher.BeginInvoke(() => _images.Add(new ImageItem(file)), DaliDispatcherPriorityEnum.Background);
             }
         }
 

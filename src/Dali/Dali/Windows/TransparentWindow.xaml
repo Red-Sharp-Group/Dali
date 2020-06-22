@@ -7,7 +7,7 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors" 
         ShowInTaskbar="False" Background="Transparent" 
         mc:Ignorable="d" WindowState="Maximized" 
-        Opacity="{Binding Opacity}"
+        Opacity="{Binding Opacity}" Topmost="True"
         AllowsTransparency="True" WindowStyle="None">
 
     <i:Interaction.Behaviors>

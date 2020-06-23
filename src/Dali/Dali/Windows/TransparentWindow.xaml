@@ -8,6 +8,7 @@
         ShowInTaskbar="False" Background="Transparent" 
         mc:Ignorable="d" WindowState="Maximized" 
         Opacity="{Binding Opacity}"
+        Icon="{StaticResource AppIcon}"
         AllowsTransparency="True" WindowStyle="None">
 
     <i:Interaction.Behaviors>

@@ -5,6 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWpf>true</UseWpf>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon>DaliIcon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

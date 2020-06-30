@@ -190,6 +190,8 @@ git_stats/*
 StyleCop.Cache
 bin
 obj
+.vscode
+
 
 # VS files
 src/Dali/.vs/*
